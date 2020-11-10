@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
-   获得字符串的最后一个单词
+   1、获得字符串的最后一个单词
  */
 
 public class LastWord {
