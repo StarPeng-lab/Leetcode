@@ -25,7 +25,7 @@ public class LastWord {
                 }
             }
             String result=ss.substring(list.get(list.size()-1)+1);
-            System.out.println("最后一个单词为："+result+"-"+result.length());
+            System.out.println("最后一个单词为："+result+"，git "+result.length());
         }
 
         /*
