@@ -2,6 +2,11 @@ package String;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+/*
+   获得字符串的最后一个单词
+ */
+
 public class LastWord {
     public static void main(String[] args) {
         System.out.print("请输入你的字符串：");
@@ -19,10 +24,10 @@ public class LastWord {
                     list.add(i);
                 }
             }
-            //System.out.println("list的长度为"+list.size());
             String result=ss.substring(list.get(list.size()-1)+1);
-            System.out.println("最后一个单词为"+result+"： "+result.length());
+            System.out.println("最后一个单词为："+result+"-"+result.length());
         }
+
         /*
         * System.out.println("请输入你的字符串：");
 		Scanner input=new Scanner(System.in);
