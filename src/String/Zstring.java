@@ -1,6 +1,10 @@
 package String;
 import java.util.List;
 import java.util.ArrayList;
+
+/**
+ * 6.Z字形变换
+ */
 public class Zstring {
     public String convert(String s, int numRows) {
         if(numRows < 2)
