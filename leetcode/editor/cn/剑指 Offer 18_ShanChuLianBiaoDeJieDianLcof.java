@@ -26,7 +26,6 @@ package leetcode.editor.cn;
 public class ShanChuLianBiaoDeJieDianLcof{
     public static void main(String[] args) {
         Solution solution = new ShanChuLianBiaoDeJieDianLcof().new Solution();
-        
     }
 
 //leetcode submit region begin(Prohibit modification and deletion)
@@ -41,15 +40,28 @@ public class ShanChuLianBiaoDeJieDianLcof{
 class Solution {
     public ListNode deleteNode(ListNode head, int val) {
         ListNode node = head;
-        while(node!=null){
+        ListNode tmp = null;
+        while(node!=null&&node.next!=null){
             if(node.val == val){
-                ListNode delete = node;
-                node = null;
-                node = delete.next;
+                node.val = node.next.val;
+                node.next = node.next.next;
+                return head;
             }else{
-                node = node.next;
+                tmp = node ; // 记录下node对象
+                node = node.next; // node变为node指向的下一个对象
             }
         }
+
+        if(node.next == null && node.val == val) {
+            //node = null ;//这样写不行，这种写法只是让node对象置空，对head对象没有影响
+            if(tmp!=null){
+                tmp.next = null;
+            }else{
+                head = null ;
+            }
+
+        }
+
         return head;
     }
 }
