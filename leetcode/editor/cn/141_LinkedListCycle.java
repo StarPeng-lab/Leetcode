@@ -62,12 +62,14 @@ public class Solution {
 
         ListNode slow = head ;
         ListNode fast = head.next ; // 1、快指针一开始就设置为，比慢指针多走一步，一开始就没有相遇
-        while(fast == null || fast.next == null){ //2、循环结束的两个条件缺一不可，为了避免空指针异常；选用快指针为结束条件，因为快指针走得快
-            slow = slow.next; //3、n表示快慢指针相差的步数；每循环一次，slow+1，fast+2 ，此时快慢指针距离n=n+1-2=n-1
-            fast = fast.next.next; //这样就表明每一次while循环都是在使 快慢指针 的距离缩短1步，因此 快慢指针一定会相遇
-                                   //有环的情况下，为了使快指针不要跨的步数直接超过了慢指针，而不是二者相遇，因此采用slow+1,fast+2的策略
+        while(fast != null && fast.next != null){ //2、循环结束的两个条件缺一不可，为了避免空指针异常；选用快指针为结束条件，因为快指针走得快
+
             if(slow == fast) //相遇，这是个环
                 return true;
+
+            slow = slow.next; //n表示快慢指针相差的步数；每循环一次，slow+1，fast+2 ，此时快慢指针距离n=n+1-2=n-1
+            fast = fast.next.next; //这样就表明每一次while循环都是在使 快慢指针 的距离缩短1步，因此 快慢指针一定会相遇
+                                   //有环的情况下，为了使快指针不要跨的步数直接超过了慢指针，而不是二者相遇，因此采用slow+1,fast+2的策略
         }
         return false;
     }
