@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 题目：
+ * 模数求和：
  * 现给定n个整数，并定义一个非负整数m，且令f(m) = (m%a1)+(m%a2)+...+(m%an)。
  * 此处的X % Y的结果为X除以Y的余数。
  * 现请你找出一个m，求出f(m)的最大值。
