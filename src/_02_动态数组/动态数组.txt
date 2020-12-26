@@ -9,6 +9,8 @@
  * 对象的类中，若重写equals()，则建议使用instenceof判断类型，再强转；
  * 因为如果ArrayList<Object>，即存储着的元素类型为Object，那么不能随意强转类型进行比较，应先判断类型是否是同一类型或其子类型，再强转比较
 
+对于null值的处理
+ * 见indexOf()方法，建议可以写null值
 
 
 
