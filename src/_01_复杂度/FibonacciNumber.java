@@ -2,6 +2,9 @@ package _01_复杂度;
 
 import Tools.TimeTool;
 
+/**
+ * 斐波那契数 三种方法以及测试耗时
+ */
 public class FibonacciNumber {
 
     public static int fib1(int n){
