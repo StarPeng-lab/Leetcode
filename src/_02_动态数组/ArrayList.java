@@ -1,15 +1,19 @@
 package _02_动态数组;
 
+import org.omg.CORBA.Object;
+
 public class ArrayList<E> implements List<E> {
 
-    private Object[] elements;
+    private E[] elements;
     private int size;
     private static final int DEFAULT_CAPACITY = 10;
     private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList(int capacity){
         capacity = (capacity <= DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
-        elements = new Object[capacity];
+        //elements = new E[capacity]; //不能用E来new一个数组
+        elements = (E[])new Object[capacity]; //对象数组中放的不是对象本身，而是对象的地址值，节约堆空间；
+                                              //对象数组中可以存放不同类型的对象，并且数组的每个元素所占内存空间相同（因为都存的是对象地址）
     }
 
     public ArrayList(){
@@ -27,13 +31,13 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean contains(Object o) {
-        return indexOf((E) o)!=ELEMENT_NOT_FOUND;
+    public boolean contains(E o) {
+        return indexOf(o)!=ELEMENT_NOT_FOUND;
     }
 
     @Override
-    public boolean add(Object o) {
-        add(size,(E)o); //在size位置，添加元素
+    public boolean add(E o) {
+        add(size,o); //在size位置，添加元素；关于是否可以存储空元素，由开发者决定，java中建议可以存储null
         return true;
     }
 
@@ -43,9 +47,13 @@ public class ArrayList<E> implements List<E> {
 
         ensureCapacity(size+1); //添加一个元素，保证此时容量有size+1
 
-        for(int i = size-1; i >=index ; i--){
+       /* for(int i = size-1; i >=index ; i--){
             elements[i+1] = this.elements[i];
+        } */
+        for(int i=size; i>index; i--){ //优化，减少了size-1和i=index的运算
+            elements[i] = elements[i-1];
         }
+
         elements[index] = element;
         size++;
     }
@@ -53,19 +61,19 @@ public class ArrayList<E> implements List<E> {
     @Override
     public E get(int index) {
         rangeCheck(index);
-        return (E)elements[index];
+        return elements[index];
     }
 
     @Override
     public E set(int index, E element) {
         rangeCheck(index);
-        Object old = elements[index];
+        E old = elements[index];
         elements[index] = element;
-        return (E)old;
+        return old;
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(java.lang.Object o) {
         if(o==null){
             for(int i=0 ; i<size ; i++){
                 if(elements[i]==null){
@@ -94,9 +102,16 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int indexOf(E element) {
-        for(int i = 0; i < size; i++){
-            if(elements[i] == element)
-                return i;
+        if(element == null){
+            for(int i = 0 ; i < size ; i++){
+                if(elements[i] == null)
+                    return i;
+            }
+        }else {
+            for (int i = 0 ; i < size ; i++) {
+                if (element.equals(elements[i])) //若为对象数组，那么对象类中可重写equals()，来自定义相等；默认equals()中是比较内存地址，基本数据类型的包装类中都重写了equals()
+                    return i;
+            }
         }
         return ELEMENT_NOT_FOUND;
     }
@@ -104,7 +119,8 @@ public class ArrayList<E> implements List<E> {
     @Override
     public void clear() {
 
-        // clear to let GC do its work
+        // clear to let GC do its work，若是对象数组，当对象地址置为null时，不再引用对象
+        // 数组的内存没有销毁，销毁的是对象数组中指向的对象
         for(int i=0 ; i<size ; i++){
             elements[i] = null;
         }
@@ -129,9 +145,9 @@ public class ArrayList<E> implements List<E> {
         int oldCapacity = elements.length;
         if(capacity <= oldCapacity)
             return;
-        //扩容为原来的1.5倍
+        //扩容为原来的1.5倍，扩容因子据自己的要求设定
         int newCapacity = oldCapacity + (oldCapacity>>1); //即newCapacity = oldCapacity*1.5，由于浮点数的运算比位运算耗时，因此用>>1（除以2^1）
-        Object[] newElements = new Object[newCapacity];
+        E[] newElements = (E[])new Object[newCapacity];
         for(int i=0 ; i<size ; i++){
             newElements[i] = elements[i];
         }
@@ -157,13 +173,14 @@ public class ArrayList<E> implements List<E> {
         int numMoved = size-1-index; //删除index位置的元素后，需要往前移动的元素个数
         if(numMoved > 0){
             //从elements[index+1]~elements[size-1]，移动numMove个元素，到elements[index]~elements[size-2]
+            //用API，arraycopy()是一连串的内存拷贝，比我们用for循环一个一个元素挪要快
             System.arraycopy(elements,index+1,elements,index,numMoved);
         }
         /*for(int i=index+1 ; i<size ; i++){
             elements[i-1] = elements[i];
         }
         size--;*/
-        elements[--size] = null; //clear to let GC do its work
+        elements[--size] = null; //clear to let GC do its work（对象数组的情况下，释放对象的引用）
     }
 
 }

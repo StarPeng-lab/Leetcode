@@ -19,7 +19,7 @@ public interface List<E> {
      * @param o
      * @return
      */
-    boolean contains(Object o) ;
+    boolean contains(E o) ;
 
     /**
      * 添加元素到最后面
