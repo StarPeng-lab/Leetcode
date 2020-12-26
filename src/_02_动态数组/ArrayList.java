@@ -41,8 +41,7 @@ public class ArrayList<E> implements List<E> {
     public void add(int index, E element) {
         rangeCheckForAdd(index);
 
-        if(size +1 > this.elements.length)
-            copyNum(this.elements);
+        ensureCapacity(size+1); //添加一个元素，保证此时容量有size+1
 
         for(int i = size-1; i >=index ; i--){
             elements[i+1] = this.elements[i];
@@ -51,34 +50,10 @@ public class ArrayList<E> implements List<E> {
         size++;
     }
 
-    private Object[] copyNum(Object[] num){
-        Object[] num2 = new Object[size <<1];
-        for(int i = 0; i < size; i++){
-            num2[i] = num[i];
-        }
-        size = num2.length;
-        num = num2;
-        return num;
-    }
-
     @Override
     public E get(int index) {
         rangeCheck(index);
         return (E)elements[index];
-    }
-
-    private void rangeCheck(int index){ //这里检查的下标，都是已经存在的元素的下标，既然是已经存在的元素，那么一定在0~size-1之间
-        if(index < 0 || index >=size)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
-
-    private void rangeCheckForAdd(int index){ //例如：size=5,此时是允许往数组中插入元素，如往最后一个位置size-1插入元素，那么size-1的元素会挪到size,因此允许index=size
-        if(index < 0 || index > size)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
-
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+this.size;
     }
 
     @Override
@@ -117,23 +92,6 @@ public class ArrayList<E> implements List<E> {
         return oldValue;
     }
 
-    /**
-     * 快速删除元素
-     * @param index
-     */
-    private void fastRemove(int index){
-        int numMoved = size-1-index; //删除index位置的元素后，需要往前移动的元素个数
-        if(numMoved > 0){
-            //从elements[index+1]~elements[size-1]，移动numMove个元素，到elements[index]~elements[size-2]
-            System.arraycopy(elements,index+1,elements,index,numMoved);
-        }
-        /*for(int i=index+1 ; i<size ; i++){
-            elements[i-1] = elements[i];
-        }
-        size--;*/
-        elements[--size] = null; //clear to let GC do its work
-    }
-
     @Override
     public int indexOf(E element) {
         for(int i = 0; i < size; i++){
@@ -166,4 +124,46 @@ public class ArrayList<E> implements List<E> {
         sb.append("]");
         return sb.toString();
     }
+
+    private void ensureCapacity(int capacity){
+        int oldCapacity = elements.length;
+        if(capacity <= oldCapacity)
+            return;
+        //扩容为原来的1.5倍
+        int newCapacity = oldCapacity + (oldCapacity>>1); //即newCapacity = oldCapacity*1.5，由于浮点数的运算比位运算耗时，因此用>>1（除以2^1）
+        Object[] newElements = new Object[newCapacity];
+        for(int i=0 ; i<size ; i++){
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+        System.out.println(oldCapacity+"扩容为"+newCapacity);
+    }
+
+    private void rangeCheck(int index){ //这里检查的下标，都是已经存在的元素的下标，既然是已经存在的元素，那么一定在0~size-1之间
+        if(index < 0 || index >=size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private void rangeCheckForAdd(int index){ //例如：size=5,此时是允许往数组中插入元素，如往最后一个位置size-1插入元素，那么size-1的元素会挪到size,因此允许index=size
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: "+index+", Size: "+this.size;
+    }
+
+    private void fastRemove(int index){
+        int numMoved = size-1-index; //删除index位置的元素后，需要往前移动的元素个数
+        if(numMoved > 0){
+            //从elements[index+1]~elements[size-1]，移动numMove个元素，到elements[index]~elements[size-2]
+            System.arraycopy(elements,index+1,elements,index,numMoved);
+        }
+        /*for(int i=index+1 ; i<size ; i++){
+            elements[i-1] = elements[i];
+        }
+        size--;*/
+        elements[--size] = null; //clear to let GC do its work
+    }
+
 }
