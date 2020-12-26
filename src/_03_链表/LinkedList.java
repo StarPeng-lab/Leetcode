@@ -1,4 +1,4 @@
-package WriteCode;
+package _03_链表;
 
 public class LinkedList<E> {
     private int size;
