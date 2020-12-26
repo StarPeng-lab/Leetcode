@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TimeTool {
 
-    private static final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss.Second");
+    private static final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss.SSS");
 
     public interface Task{
         void execute();
