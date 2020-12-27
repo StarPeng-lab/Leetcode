@@ -1,5 +1,15 @@
 增删改查
- * add,remove,set,get
+ * add(E),remove(E),set(int,E),get(int)
+ * add(int,E),remove(int)
+其他方法
+ * 构造方法：ArrayList(),ArrayList(int)
+ * size()
+ * isEmpty()
+ * contains(E)
+ * indexOf(E)
+ * clear()
+ * toString()
+ * rangeCheck(),rangeCheckForAdd()
 
 动态扩容
 
