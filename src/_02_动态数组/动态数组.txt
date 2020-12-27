@@ -9,9 +9,8 @@
  * indexOf(E)
  * clear()
  * toString()
- * rangeCheck(),rangeCheckForAdd()
-
-动态扩容
+ * 越界检查：rangeCheck(),rangeCheckForAdd()
+ * 动态扩容：ensureCapacity(int)
 
 泛型E
 
@@ -20,7 +19,12 @@
  * 因为如果ArrayList<Object>，即存储着的元素类型为Object，那么不能随意强转类型进行比较，应先判断类型是否是同一类型或其子类型，再强转比较
 
 对于null值的处理
- * 见indexOf()方法，建议可以写null值
+ * 见indexOf(E)方法，建议可以写null值
+ * remove(E)方法中，其实可以简化书写，内部引用indexOf(E)找到index，再用fastRemove(int index)来删除元素
+ （数组无需区分是否是第一个或最后一个元素，这是在链表中区分的）
+
+ 优化：以后可以利用index与size/2进行比较，来确定从头开始查找或从尾查找；
+      元素可以不移动，而是改变元素下标
 
 
 
