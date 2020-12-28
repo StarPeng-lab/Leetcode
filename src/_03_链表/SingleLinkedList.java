@@ -1,52 +1,39 @@
 package _03_链表;
 
 import _02_动态数组.AbstractList;
-import _02_动态数组.List;
 
-//底层是双向链表
-public class LinkedList<E> extends AbstractList<E> {
-    private int size;
+
+// 若用单向链表实现
+public class SingleLinkedList<E> extends AbstractList<E> {
+
     private Node<E> first;
-    private Node<E> last;
 
     private static class Node<E>{
         E element;
         Node<E> next;
-        Node<E> prev;
         public Node(E element, Node<E> next){
             this.element = element;
             this.next = next;
-            this.prev = prev;
         }
     }
 
     private Node<E> node(int index){
         rangeCheck(index);
-        if(index < (size >>1)){
-            Node<E> x = first;
-            for(int i = 0 ; i < index ; i++)
-                x = x.next;
-            return x;
-        }else{
-            Node<E> x = last;
-            for(int i = size-1 ; i > index ; i--)
-                x = x.prev;
-            return x;
+        Node<E> node = first;
+        for(int i=0 ; i<index ; i++){
+            node = node.next;
         }
-
-    }
-
-    public LinkedList(){
+        return node;
     }
 
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
         if(index == 0){
-            first = new Node<>(element,first);
+            first = new Node<E>(element,first);
         }else{
             Node<E> prev = node(index-1);
-            prev.next = new Node<>(element,prev.next);
+            prev.next = new Node<E>(element,prev.next);
         }
         size++;
     }
@@ -65,21 +52,25 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(Object o) { //参数是Object类型，因此删除一个基本数据类型的元素，jdk8后会自动装箱；int类型的数据是特例，由于重载了remove(int index)方法，因此，需要手动装箱删除元素为20，以免被jvm认为是index为20的元素
         int index = indexOf((E)o);
-        remove(index);
-        return false;
+        if(index != ELEMENT_NOT_FOUND){
+            remove(index);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
     public E remove(int index) {
         Node<E> node = first;
-        if(index == 0 ){
+        if(index ==0){
             first = first.next;
         }else{
             Node<E> prev = node(index-1);
             node = prev.next;
-            prev.next = node.next;
+            prev.next = node.next; // prev.next = prev.next.next;
         }
         size--;
         return node.element;
@@ -87,18 +78,18 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public int indexOf(E element) {
-        int index = 0 ;
+        Node<E> node = first;
         if(element == null){ //判断空值的情况
-            for(Node<E> x = first ; x != null ; x = x.next){
-                if(x.element == null)
-                    return index;
-                index++;
+            for(int i=0 ; i<size ; i++){
+                if(node.element == null)
+                    return i;
+                node = node.next;
             }
         }else{
-            for(Node<E> x = first ; x != null ; x = x.next){
-                if(element.equals(x.element))
-                    return index;
-                index++;
+            for(int i=0 ; i<size ; i++){
+                if(element.equals(node.element))
+                    return i;
+                node = node.next;
             }
         }
         return ELEMENT_NOT_FOUND;
@@ -107,15 +98,7 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void clear() {
         size = 0;
-        for(Node<E> x = first ; x != null ; ){
-            Node<E> next = x.next;
-            x.element = null; //无论element存着的是基本数据类型还是对象地址，都置空
-            x.next = null;
-            x.prev = null;
-            x = next;
-        }
         first = null;
-        last = null;
     }
 
     @Override
@@ -123,21 +106,13 @@ public class LinkedList<E> extends AbstractList<E> {
         StringBuilder sb = new StringBuilder();
         sb.append("Size: ").append(size).append(", [");
         Node<E> node = first;
-        while(node != null){
-            if(node != first){
-                sb.append(",");
-            }
-            sb.append(node.element);
-            node = node.next;
-        }
-       /* for(int i=0 ; i < size ; i++){
+        for(int i=0 ; i < size ; i++){
             if(i != 0)
                 sb.append(",");
             sb.append(node.element);
             node = node.next;
-        }*/
+        }
         sb.append("]");
         return sb.toString();
     }
-
 }
