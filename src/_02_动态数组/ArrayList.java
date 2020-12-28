@@ -1,13 +1,9 @@
 package _02_动态数组;
 
-import org.omg.CORBA.Object;
-
-public class ArrayList<E> implements List<E> {
+public class ArrayList<E> extends AbstractList<E> {
 
     private E[] elements;
-    private int size;
     private static final int DEFAULT_CAPACITY = 10;
-    private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList(int capacity){
         capacity = (capacity <= DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
@@ -20,26 +16,6 @@ public class ArrayList<E> implements List<E> {
         this(DEFAULT_CAPACITY);
     }
 
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
-    public boolean contains(E o) {
-        return indexOf(o)!=ELEMENT_NOT_FOUND;
-    }
-
-    @Override
-    public boolean add(E o) {
-        add(size,o); //在size位置，添加元素；关于是否可以存储空元素，由开发者决定，java中建议可以存储null
-        return true;
-    }
 
     @Override
     public void add(int index, E element) {
@@ -53,7 +29,6 @@ public class ArrayList<E> implements List<E> {
         for(int i=size; i>index; i--){ //优化，减少了size-1和i=index的运算
             elements[i] = elements[i-1];
         }
-
         elements[index] = element;
         size++;
     }
@@ -153,20 +128,6 @@ public class ArrayList<E> implements List<E> {
         }
         elements = newElements;
         System.out.println(oldCapacity+"扩容为"+newCapacity);
-    }
-
-    private void rangeCheck(int index){ //这里检查的下标，都是已经存在的元素的下标，既然是已经存在的元素，那么一定在0~size-1之间
-        if(index < 0 || index >=size)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
-
-    private void rangeCheckForAdd(int index){ //例如：size=5,此时是允许往数组中插入元素，如往最后一个位置size-1插入元素，那么size-1的元素会挪到size,因此允许index=size
-        if(index < 0 || index > size)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
-
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+this.size;
     }
 
     private void fastRemove(int index){

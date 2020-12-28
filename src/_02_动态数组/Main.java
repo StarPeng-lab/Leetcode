@@ -4,7 +4,7 @@ import Tools.Assert;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<Integer>();
         //测试add,remove,set,get
         list.add(10);
         list.add(20);

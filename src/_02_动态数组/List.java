@@ -2,6 +2,8 @@ package _02_动态数组;
 
 public interface List<E> {
 
+   int ELEMENT_NOT_FOUND = -1; // public static final
+
     /**
      * 元素的数量
      * @return
@@ -26,7 +28,7 @@ public interface List<E> {
      * @param o
      * @return
      */
-    boolean add(E o) ;
+    boolean add(E element) ;
 
     /**
      * 往index位置添加元素
