@@ -30,20 +30,22 @@ public class ReverseLinkedList{
 class Solution {
     public ListNode reverseList(ListNode head) {
         //方法一：用递归（可参考恋上数据结构4-8）
+        //      if(head == null) return null;
+        //      if(head.next == null) return head;
         /*
         if(head == null || head.next == null)
             return head;
-        ListNode newHead = reverseList(head.next);
+        ListNode newHead = reverseList(head.next); //保留newHead，递归到最末尾时的末尾.next即为newHead
         head.next.next = head;   // head.next的next指回head
         head.next = null; // head.next置空
-        return newHead;
+        return newHead; // 无论递归多少次，newHead都没有被改变，都是最末尾的末尾.next
         */
 
         //方法二：非递归，用迭代
-        if(head==null || head.next==null)
+        if(head == null || head.next == null)
             return head;
         ListNode newHead = null;
-        while(head!=null){
+        while(head != null){
             ListNode tmp = head.next;
             head.next = newHead;
             newHead = head;
