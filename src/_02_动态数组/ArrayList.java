@@ -23,6 +23,12 @@ public class ArrayList<E> extends AbstractList<E> {
 
         ensureCapacity(size+1); //添加一个元素，保证此时容量有size+1
 
+        /**
+         * 最好情况复杂度：O(1) -- 添加到最后一位
+         * 最坏情况复杂度：O(n) -- 添加到第一位
+         * 平均情况复杂度: O(n) -- 添加到中间元素 (1+2+3+...+n)/n=n/2 --> O(n/2)=O(n)
+         */
+
        /* for(int i = size-1; i >=index ; i--){
             elements[i+1] = this.elements[i];
         } */
@@ -69,6 +75,11 @@ public class ArrayList<E> extends AbstractList<E> {
 
     @Override
     public E remove(int index){
+        /**
+         * 最好情况复杂度：O(1) -- 删除最后一个元素
+         * 最坏情况复杂度：O(n) -- 删除第一个元素
+         * 平均情况复杂度: O(n) -- 删除中间元素 (1+2+3+...+n)/n=n/2 --> O(n/2)=O(n)
+         */
         rangeCheck(index);
         E oldValue = (E) elements[index];
         fastRemove(index);
