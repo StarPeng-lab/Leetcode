@@ -138,7 +138,27 @@ public class ArrayList<E> extends AbstractList<E> {
             newElements[i] = elements[i];
         }
         elements = newElements;
+
         System.out.println(oldCapacity+"扩容为"+newCapacity);
+    }
+
+    private void trim(){ //数组空闲空间超过一半，并且数组新容量超过默认容量时，就缩容
+        int oldCapacity = elements.length;
+        int newCapacity = oldCapacity >> 1; // 新容量设置为总容量除以2
+
+        if(size >= newCapacity || newCapacity <= DEFAULT_CAPACITY) //数组未用空间没有超过新容量的一半，或者总容量在默认容量内
+            return;
+
+        if(oldCapacity <= DEFAULT_CAPACITY)
+            return;
+        E[] newElements = (E[])new Object[newCapacity];
+        for(int i=0 ; i<size ; i++){
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+
+        System.out.println("Size:"+size+", Oldcapacity:"+oldCapacity+", newCapacity:"+newCapacity);
+        System.out.println(oldCapacity+"缩容为："+newCapacity);
     }
 
     private void fastRemove(int index){
@@ -153,6 +173,7 @@ public class ArrayList<E> extends AbstractList<E> {
         }
         size--;*/
         elements[--size] = null; //clear to let GC do its work（对象数组的情况下，释放对象的引用）
+        trim();
     }
 
 }
