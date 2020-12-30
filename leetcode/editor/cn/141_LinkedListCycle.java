@@ -55,7 +55,7 @@ public class LinkedListCycle{
  */
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        //采用快慢指针
+        //采用快慢指针：快慢指针的前进方向相同，且它们步伐的「差」是恒定的
 
         if(head == null || head.next == null)
             return false;
