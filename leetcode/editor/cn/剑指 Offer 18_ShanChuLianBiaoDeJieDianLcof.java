@@ -39,9 +39,10 @@ public class ShanChuLianBiaoDeJieDianLcof{
  */
 class Solution {
     public ListNode deleteNode(ListNode head, int val) {
+        //方法一：删除头尾结点时另做考虑
         ListNode node = head;
         ListNode tmp = null;
-        while(node!=null&&node.next!=null){
+        while(node != null && node.next != null){
             if(node.val == val){
                 node.val = node.next.val;
                 node.next = node.next.next;
@@ -63,6 +64,22 @@ class Solution {
         }
 
         return head;
+
+        //方法二：创建一个虚拟头结点
+        /*
+        ListNode sentinel = new ListNode(0);
+        sentinel.next = head;
+        ListNode prev = sentinel;
+        while(prev.next != null){
+            if(prev.next.val == val){
+                prev.next = prev.next.next;
+                break;
+            }
+            prev = prev.next;
+        }
+        return sentinel.next;
+
+         */
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
