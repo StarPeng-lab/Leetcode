@@ -17,9 +17,18 @@ public class SingleLinkedList<E> extends AbstractList<E> {
         }
     }
 
+    public SingleLinkedList(){
+        //1、创建一个虚拟头结点（共修改了6处：构造方法,node,add,remove,indexOf,toString）
+        //LinkedList底层没有用虚拟头结点（虚拟头结点在测试题的链表元素删除中比较常用）
+        first = new Node<E>(null,null);
+    }
+
     private Node<E> node(int index){
         rangeCheck(index);
-        Node<E> node = first;
+
+        //Node<E> node = first;
+        Node<E> node = first.next; //2、虚拟头结点.next
+
         for(int i=0 ; i<index ; i++){
             node = node.next;
         }
@@ -29,12 +38,18 @@ public class SingleLinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
+
+        /*
         if(index == 0){
             first = new Node<E>(element,first);
         }else{
             Node<E> prev = node(index-1);
             prev.next = new Node<E>(element,prev.next);
-        }
+        }*/
+        //3、
+        Node<E> prev = index==0 ? first : node(index-1);
+        prev.next = new Node<E>(element,prev.next);
+
         size++;
     }
 
@@ -65,6 +80,8 @@ public class SingleLinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index); //虽然后面有node(index)里进行了边界检查，然而，当链表为空时，若直接remove(0)，此时first=null，会报NPE异常，因此需要一开始就rangeCheck，当index=0且size=0时抛出异常
+
+        /*
         Node<E> node = first;
         if(index == 0){
             first = first.next;
@@ -72,14 +89,21 @@ public class SingleLinkedList<E> extends AbstractList<E> {
             Node<E> prev = node(index-1);
             node = prev.next;
             prev.next = node.next; // prev.next = prev.next.next;
-        }
+        }*/
+        //4、
+        Node<E> prev = index==0 ? first : node(index-1);
+        Node<E> node = prev.next;
+        prev.next = node.next;
+
         size--;
         return node.element;
     }
 
     @Override
     public int indexOf(E element) {
-        Node<E> node = first;
+        //Node<E> node = first;
+        Node<E> node = first.next; //5、虚拟头结点.next
+
         if(element == null){ //判断空值的情况
             for(int i=0 ; i<size ; i++){
                 if(node.element == null)
@@ -106,7 +130,10 @@ public class SingleLinkedList<E> extends AbstractList<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Size: ").append(size).append(", [");
-        Node<E> node = first;
+
+        //Node<E> node = first;
+        Node<E> node = first.next; //6、虚拟头结点.next
+
         for(int i=0 ; i < size ; i++){
             if(i != 0)
                 sb.append(",");

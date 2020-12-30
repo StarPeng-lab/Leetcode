@@ -13,5 +13,6 @@ public class Main {
         list.remove(2);
         list.remove(new Integer(20));
         System.out.println(list); // Size: 2, [10,40]
+        System.out.println(list.indexOf(10)); //0
     }
 }
