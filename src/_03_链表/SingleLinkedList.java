@@ -64,8 +64,9 @@ public class SingleLinkedList<E> extends AbstractList<E> {
 
     @Override
     public E remove(int index) {
+        rangeCheck(index); //虽然后面有node(index)里进行了边界检查，然而，当链表为空时，若直接remove(0)，此时first=null，会报NPE异常，因此需要一开始就rangeCheck，当index=0且size=0时抛出异常
         Node<E> node = first;
-        if(index ==0){
+        if(index == 0){
             first = first.next;
         }else{
             Node<E> prev = node(index-1);

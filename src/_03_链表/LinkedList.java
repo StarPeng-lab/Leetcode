@@ -5,7 +5,7 @@ import _02_动态数组.List;
 
 //底层是双向链表
 public class LinkedList<E> extends AbstractList<E> {
-    private int size;
+
     private Node<E> first;
     private Node<E> last;
 
@@ -67,12 +67,17 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public boolean remove(Object o) {
         int index = indexOf((E)o);
-        remove(index);
-        return false;
+        if(index != ELEMENT_NOT_FOUND){
+            remove(index);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
     public E remove(int index) {
+        rangeCheck(index);
         Node<E> node = first;
         if(index == 0 ){
             first = first.next;
