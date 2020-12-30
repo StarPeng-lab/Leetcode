@@ -50,7 +50,7 @@ public class FibonacciNumber{
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int fib(int n) {
-        //方法一，复杂度：O(2^n)，耗时8ms
+        //方法一，复杂度：O(2^n)，耗时8ms （n是指数据规模）
         /*
         if(n<=1)
             return n;
