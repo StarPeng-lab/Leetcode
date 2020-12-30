@@ -36,11 +36,11 @@ public class ArrayList<E> extends AbstractList<E> {
     @Override
     public E get(int index) {
         rangeCheck(index);
-        return elements[index];
+        return elements[index]; //数组访问元素复杂度：O(1)，编译器通过【index*数据类型所占字节大小+数组首地址】来找到index索引处的元素
     }
 
     @Override
-    public E set(int index, E element) {
+    public E set(int index, E element) { //O(1)
         rangeCheck(index);
         E old = elements[index];
         elements[index] = element;
