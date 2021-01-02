@@ -134,7 +134,7 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void clear() {
         size = 0;
-        for(Node<E> x = first ; x != null ; ){
+        for(Node<E> x = first ; x != null ; ){ //帮助gc先回收暂时不用的对象（未被迭代器引用的对象，或者先回收已经不被引用的对象）
             Node<E> next = x.next;
             x.element = null; //无论element存着的是基本数据类型还是对象地址，都置空
             x.next = null;
