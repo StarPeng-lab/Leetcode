@@ -3,7 +3,7 @@ package _03_链表;
 import _02_动态数组.AbstractList;
 
 
-// 若用单向链表实现
+// 底层：单向链表
 public class SingleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
