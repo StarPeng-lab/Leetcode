@@ -1,5 +1,6 @@
 package _02_动态数组;
 
+//接口：抽象出动态数组和链表的公共方法
 public interface List<E> {
 
    int ELEMENT_NOT_FOUND = -1; // public static final
