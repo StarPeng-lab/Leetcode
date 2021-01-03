@@ -3,7 +3,7 @@ package _03_链表;
 import _02_动态数组.AbstractList;
 import _02_动态数组.List;
 
-//底层：双向链表
+//底层：双向链表，first指向头节点，last指向尾节点，头节点和尾节点都指向null
 public class LinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
