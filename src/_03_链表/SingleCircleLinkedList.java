@@ -4,6 +4,9 @@ import _02_动态数组.AbstractList;
 
 
 // 底层：单向循环链表，修改add(int,E),remove(int)：将尾节点.next指向头节点
+//      用了两种方式：有虚拟头节点，无虚拟头节点
+//      （都要考虑添加/删除头节点的情况，并在此情况下，添加是否原来没有元素进行添加/删除是否原来只有一个元素进行删除；
+//        以及在中间和末尾添加/删除元素，由于在头节点已经将尾节点的next指向了头节点，因此在中间和末尾处理方式相同）
 public class SingleCircleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
