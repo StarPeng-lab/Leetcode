@@ -1,5 +1,6 @@
 package _02_动态数组;
 
+//抽象类：抽取了公共代码，并实现抽象接口
 public abstract class AbstractList<E> implements List<E> { //抽象出这层抽象类，实现ArrayList和LinkedList相同的方法代码，这层对外界不可见
     protected int size;
 
