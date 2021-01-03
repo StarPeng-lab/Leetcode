@@ -25,5 +25,6 @@ public class Main {
         test(new SingleLinkedList<>());
         test(new LinkedList<>());
         test(new SingleCircleLinkedList<>());
+        test(new CircleLinkedList<>());
     }
 }
