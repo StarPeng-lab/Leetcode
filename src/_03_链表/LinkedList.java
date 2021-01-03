@@ -55,7 +55,7 @@ public class LinkedList<E> extends AbstractList<E> {
             Node<E> prev = next.prev;
             Node<E> node = new Node<E>(prev,element,next);
             next.prev = node;
-            if(prev == null){
+            if(prev == null){ // index == 0
                 first = node;
             }else{
                 prev.next = node;
