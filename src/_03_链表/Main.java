@@ -10,13 +10,17 @@ public class Main {
         list.add(0,10); //size = 3
 
         list.add(list.size(),40); // Size: 4, [10,20,30,40]
-        list.remove(2);
+
+        list.remove(0);
         list.remove(new Integer(20));
+
         System.out.println(list); // Size: 2, [10,40]
-        Assert.test(list.indexOf(10)==0);
+
+        Assert.test(list.indexOf(30)==0);
     }
     public static void main(String[] args) {
-        test(new SingleLinkedList<>());
-        test(new LinkedList<>());
+        //test(new SingleLinkedList<>());
+        //test(new LinkedList<>());
+        test(new SingleCircleLinkedList<>());
     }
 }
