@@ -3,7 +3,7 @@ package _03_链表;
 import _02_动态数组.AbstractList;
 
 //底层：双向循环链表，first指向头节点，last指向尾节点，头节点.prev指向尾节点，尾节点.next指向头节点
-//修改add(int,E)，remove(int,E)
+//修改add(int,E)，remove(int)
 public class CircleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
@@ -58,10 +58,9 @@ public class CircleLinkedList<E> extends AbstractList<E> {
             Node<E> prev = next.prev;
             Node<E> node = new Node<E>(prev,element,next);
             next.prev = node;
-            if(prev == null){
+            prev.next = node;
+            if(next == first){ // index == 0
                 first = node;
-            }else{
-                prev.next = node;
             }
         }
         size++;
@@ -95,20 +94,23 @@ public class CircleLinkedList<E> extends AbstractList<E> {
     public E remove(int index) {
         rangeCheck(index);
 
-        Node<E> node = node(index);
-        Node<E> prev = node.prev;
-        Node<E> next = node.next;
-
-        if(prev == null){ //index == 0
-            first = next;
+        Node<E> node = first;
+        if(size == 1){
+            first = null;
+            last = null;
         }else {
+            node = node(index);
+            Node<E> prev = node.prev;
+            Node<E> next = node.next;
             prev.next = next;
-        }
-
-        if(next == null){ //index == size-1
-            last = prev;
-        }else{
             next.prev = prev;
+
+            if (node == first) { //index == 0
+                first = next;
+            }
+            if (node == last) { //index == size-1
+                last = prev;
+            }
         }
 
         size--;
