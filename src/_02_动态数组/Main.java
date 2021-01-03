@@ -14,7 +14,7 @@ public class Main {
         list.remove(2);
         System.out.println(list);
         list.set(0,5);
-        Assert.test(list.get(0)==6);
+        Assert.test(list.get(0)==6); // 抛出异常，测试未通过
         System.out.println(list);
 
         //测试扩容
