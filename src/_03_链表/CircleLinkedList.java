@@ -2,7 +2,8 @@ package _03_链表;
 
 import _02_动态数组.AbstractList;
 
-//底层：双向循环链表，first指向头节点，last指向尾节点
+//底层：双向循环链表，first指向头节点，last指向尾节点，头节点.prev指向尾节点，尾节点.next指向头节点
+//修改add(int,E)，remove(int,E)
 public class CircleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
@@ -43,11 +44,14 @@ public class CircleLinkedList<E> extends AbstractList<E> {
         rangeCheckForAdd(index);
         if(index == size){
             Node<E> oldLast = last;
-            last = new Node<E>(oldLast,element,null);
-            if(oldLast == null) { //添加的是第一个元素
-                first = last; //first和last都指向新添加的元素，新添加的元素的prev和next都指向null
+            last = new Node<E>(oldLast,element,first);
+            if(oldLast == null) { //添加的是第一个元素，即为last
+                first = last; //first和last都指向新添加的元素，新添加的元素的prev和next都指向它自身
+                first.prev = first;
+                first.next = first;
             }else{ //添加的是最后一个元素
                 oldLast.next = last;
+                first.prev = last;
             }
         }else{
             Node<E> next = node(index);
