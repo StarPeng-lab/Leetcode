@@ -176,19 +176,22 @@ public class CircleLinkedList<E> extends AbstractList<E> {
         StringBuilder sb = new StringBuilder();
         sb.append("Size: ").append(size).append(", [");
         Node<E> node = first;
+
+        /* 双向循环链表，不能用node != null，因为链表的last指向first
         while(node != null){
             if(node != first){
                 sb.append(",");
             }
             sb.append(node.element);
             node = node.next;
-        }
-       /* for(int i=0 ; i < size ; i++){
+        }*/
+        for(int i=0 ; i < size ; i++){
             if(i != 0)
                 sb.append(",");
-            sb.append(node.element);
+            sb.append(node);
             node = node.next;
-        }*/
+        }
+
         sb.append("]");
         return sb.toString();
     }
