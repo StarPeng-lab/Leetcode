@@ -18,6 +18,27 @@ public class LinkedList<E> extends AbstractList<E> {
             this.next = next;
             this.prev = prev;
         }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+
+            if(prev != null){
+                sb.append(prev.element);
+            }else{
+                sb.append("null");
+            }
+
+            sb.append("_").append(element).append("_");
+
+            if(next != null){
+                sb.append(next.element);
+            }else{
+                sb.append("null");
+            }
+
+            return sb.toString();
+        }
     }
 
     private Node<E> node(int index){
@@ -154,13 +175,13 @@ public class LinkedList<E> extends AbstractList<E> {
             if(node != first){
                 sb.append(",");
             }
-            sb.append(node.element);
+            sb.append(node);
             node = node.next;
         }
        /* for(int i=0 ; i < size ; i++){
             if(i != 0)
                 sb.append(",");
-            sb.append(node.element);
+            sb.append(node);
             node = node.next;
         }*/
         sb.append("]");
