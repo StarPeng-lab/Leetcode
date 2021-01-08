@@ -45,6 +45,14 @@ public class CircleQueue<E> {
         return size==0;
     }
 
+    public void clear(){
+        for(int i = 0 ; i < size ; i++){
+            elements[index(i)] = null; // 通过index(i)找到真正的索引
+        }
+        size = 0;
+        front = 0;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -61,7 +69,11 @@ public class CircleQueue<E> {
 
     //循环队列中，得到真正的所求元素索引
     private int index(int index){
-        return (front+index)%elements.length; //(队头下标+真正下标) % 整个数组长度，得到真正的真正的下标
+        //return (front+index)%elements.length; //(队头下标+真正下标) % 整个数组长度，得到真正的真正的下标
+
+        //优化：
+        index = index + front;
+        return index - (index < elements.length ? 0 : elements.length);
     }
 
     //扩容

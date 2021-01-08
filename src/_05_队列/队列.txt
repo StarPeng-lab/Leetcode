@@ -30,3 +30,19 @@ d2.offerLast("z");
 
 4、循环双端队列
  * 可以进行两端添加、删除操作的循环队列
+
+注意：运算中尽量少用 * / %，性能低；
+    n%m，开始优化：
+        if(n>=m){ //这段代码是建立在n<2m的基础上，例如，20%10=0，但是经过优化的代码会得出10
+            return n-m;
+        }else{
+            return n;
+        }
+
+    总结：已知 n>=0, m>=0，n%m 等价于 n-(n<m?0:m) 的前提条件：n<2m
+
+    用在循环队列和双端循环队列中的index(int i)方法中，index%elements.length;
+    index>=0,elements.length>=0,并且队列中 index < 2*(elements.length);
+    例： 3 4 5 6 (7) null [2]
+     elements.length = 7 , front = 6 , size = 6 , 从队尾添加元素1，此时index=size+front=12, index<2*7
+     那么index%elements.length可以转换为，index - ( index < elements.length ? 0 : elements.length )
