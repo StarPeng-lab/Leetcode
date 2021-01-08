@@ -4,6 +4,7 @@ import _02_动态数组.List;
 import _03_链表.LinkedList;
 
 //Deque，双端队列，可以在队头出队入队，在队尾出队入队
+//官方源码中，Deque接口继承了Queue接口，实现类是LinkedList类
 public class Deque<E> {
 
     private List<E> list = new LinkedList<>();
