@@ -1,0 +1,32 @@
+1、队列，Queue
+ * 一种特殊的线性表，在首尾操作，用LinkedList实现；尾进首出
+ * 官方源码中，Quque接口扩展自Collection接口，public interface Queue<E> extends Collection<E>
+ * Queue接口的实现类有LinkedList。
+2、双端队列，Deque，double ended queue
+ * 用LinkedList实现,可以首进首出、尾进尾出；
+ * 官方源码中，Deque接口实际上扩展自Queue接口，public interface Deque<E> extends Queue<E>
+ * 因此，Queue提供的add()/offer()方法在Deque中也可以使用，但是，使用Deque，最好不要调用offer()，而是调用offerLast()：
+ * Deque的add()实际上是addLast(),offer()实际上是offerLast(),为了可读性，因此调用addLast()/offerLast()
+ * 官方源码中，Deque是一个接口，它的实现类有ArrayDeque和LinkedList。
+
+说明：（1）
+LinkedList类，即是List，又是Queue，还是Deque的实现类；
+我们在使用的时候，总是用特定的接口来引用LinkedList，这是因为持有接口说明代码的抽象层次更高，而且接口本身定义的方法代表了特定的用途。
+可见【面向抽象编程的一个原则】就是：【尽量持有接口，而不是具体的实现类。】
+例：
+LinkedList<String> d1 = new LinkedList<>(); // 不推荐的写法:
+d1.offerLast("z");
+
+Deque<String> d2 = new LinkedList<>(); // 推荐的写法：
+d2.offerLast("z");
+
+（2） 避免把null添加到队列。因为调用队列方法时，如poll()，如果返回的是null，我们无法确定这是队列的元素，还是说明队列此时为空因此返回null
+
+（3） 队列底层不仅可以用LinkedList实现，还可以用动态数组实现，并且各项接口可以优化到O(1)的时间复杂度，这个用数组实现并且优化之后的队列称作，循环队列
+
+3、循环队列，Circle Queue
+ * 底层用数组实现，在队头出队，在队尾入队
+ * 定义一个队头front，存储队头元素的下标
+
+4、循环双端队列
+ * 可以进行两端添加、删除操作的循环队列
