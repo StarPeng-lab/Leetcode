@@ -3,7 +3,8 @@ package _05_队列;
 import _02_动态数组.List;
 import _03_链表.LinkedList;
 
-//队列是先进先出，因此要在首尾操作数据，尾进首出，用LinkedList实现
+//队列，先进先出，因此要在首尾操作数据，尾进首出，用LinkedList实现
+//官方源码中，Queue接口的实现类是LinkedList类，offer方法内部就是调用了LinkedList的add方法
 public class Queue<E> {
     private List<E> list = new LinkedList<E>();
 
