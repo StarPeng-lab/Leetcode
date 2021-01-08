@@ -55,5 +55,12 @@ public class Queue<E> {
     boolean isEmpty(){
         return list.isEmpty();
     }
+
+    /**
+     * 清空队列
+     */
+    void clear(){
+        list.clear();
+    }
 }
 
