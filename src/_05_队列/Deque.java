@@ -53,4 +53,8 @@ public class Deque<E> {
         return list.isEmpty();
     }
 
+    void clear(){
+        list.clear();
+    }
+
 }
