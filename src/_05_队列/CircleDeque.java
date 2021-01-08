@@ -65,6 +65,14 @@ public class CircleDeque<E> {
         return size==0;
     }
 
+    public void clear(){
+        for(int i = 0 ; i < size ; i++){
+            elements[index(i)] = null;
+        }
+        size = 0;
+        front = 0;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -82,13 +90,21 @@ public class CircleDeque<E> {
     //循环队列中，得到真正的所求元素索引
     private int index(int index){
 
+        //return (front+index)%elements.length; //(队头下标+真正下标) % 整个数组长度，得到真正的真正的下标
+
+        //完整版，这里是循环双端队列，要考虑在队头添加元素时，传入-1后，front+index为负数的情况
         index = index + front;
         if(index < 0){
-            index = index + elements.length; //比如front=0时，在队头添加元素，此时的front=elements.length
+            index = index + elements.length; //比如front=0时，在队头添加元素，此时的front应该=elements.length
         }
-        return index%elements.length;
 
-        //return (front+index)%elements.length; //(队头下标+真正下标) % 整个数组长度，得到真正的真正的下标
+        // return index%elements.length;
+
+        //模数优化：
+        return index - (index < elements.length ? 0 : elements.length);
+
+
+
     }
 
     //扩容
