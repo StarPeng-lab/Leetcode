@@ -59,9 +59,9 @@ public class CircleQueue<E> {
         return sb.toString();
     }
 
-    //循环队列中，得到真正的队头元素索引
-    private int index(int i){
-        return (front+i)%elements.length;
+    //循环队列中，得到真正的所求元素索引
+    private int index(int index){
+        return (front+index)%elements.length; //(队头下标+真正下标) % 整个数组长度，得到真正的真正的下标
     }
 
     //扩容
