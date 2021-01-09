@@ -1,0 +1,5 @@
+比较的逻辑实现，BinarySearchTree有compare(E e1,E e2)方法进行比较，具体的实现，要看构造函数中是否传入了比较器
+            如果传入了比较器java.util.Comparator，那么可以自定义不同的比较逻辑，在测试代码中新建一个类或匿名内部类实现接口Comparator的 int compare(T e1. T e2)即可
+            如果未传入比较器，那么就要求BinarySearchTree类中存放的数据类型E，必须实现java.lang.Comparable接口，即如果E为User，那么User类中必须实现Comparale接口，并重写int compareTo(T e2)方法，注意此时就只有一种比较逻辑了
+            compare(T e1 , T e2)：返回值>0 ，说明e1>e2；返回值=0 ，说明e1=e2；返回值<0，说明e1<e2
+            e1.compareTo(T e2)：返回值>0 ，说明e1>e2；返回值=0 ，说明e1=e2；返回值<0，说明e1<e2
