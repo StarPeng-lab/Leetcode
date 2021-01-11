@@ -67,8 +67,8 @@ public class BinarySearchTree<E> {
                 node = node.right;
             }else if(com < 0){ //说明 element 比 node.element 小，往下遍历到二叉搜索树的左节点
                 node = node.left;
-            }else{ //说明 element 等于 node.element ，对这个节点重新赋值
-                parent = new Tree<E>(element,parent);
+            }else{ //说明 element 等于 node.element ，对这个节点重新赋值（重新赋值的原因时，如果类型为自定义类User，此时虽然按自定义比较逻辑：age相等，两个对象即相等，但这其实还是两个不同的对象，需要新值覆盖旧值）
+                node.element = element;
                 return;
             }
 
@@ -109,6 +109,45 @@ public class BinarySearchTree<E> {
         if(element == null){
             throw new IllegalArgumentException("Value must not be null !");
         }
+    }
+
+    /*前序遍历*/
+    public void preOrderTraversal(){
+        preOrderTraversal(root);
+    }
+    private void preOrderTraversal(Tree<E> node){
+        if(node == null)
+            return;
+
+        System.out.println(node.element);
+        preOrderTraversal(node.left);
+        preOrderTraversal(node.right);
+    }
+
+    /*中序遍历*/
+    public void inOrderTraversal(){
+        inOrderTraversal(root);
+    }
+    private void inOrderTraversal(Tree<E> node){
+        if(node == null)
+            return;
+
+        inOrderTraversal(node.left);
+        System.out.println(node.element);
+        inOrderTraversal(node.right);
+    }
+
+    /*后序遍历*/
+    public void postOrderTraversal(){
+        inOrderTraversal(root);
+    }
+    private void postOrderTraversal(Tree<E> node){
+        if(node == null)
+            return;
+
+        postOrderTraversal(node.left);
+        postOrderTraversal(node.right);
+        System.out.println(node.element);
     }
 
 }
