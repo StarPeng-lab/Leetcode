@@ -23,6 +23,13 @@ public class Main {
 
         bst1.preOrderTraversal(); //前序遍历
         System.out.println();
+        bst1.preOrder(new BinarySearchTree.Visitor<Integer>(){
+            @Override
+            public void visit(Integer element) {
+                System.out.print(element+"_");
+            }
+        });
+        System.out.println();
         System.out.println("----------------------------------------");
     }
 
@@ -34,6 +41,13 @@ public class Main {
         }
 
         bst2.inOrderTraversal(); //中序遍历
+        System.out.println();
+        bst2.inOrder(new BinarySearchTree.Visitor<User1>() {
+            @Override
+            public void visit(User1 element) {
+                System.out.print(element+"_");
+            }
+        });
         System.out.println();
         System.out.println("----------------------------------------");
     }
@@ -47,6 +61,13 @@ public class Main {
         }
 
         bst3.postOrderTraversal(); //后序遍历
+        System.out.println();
+        bst3.postOrder(new BinarySearchTree.Visitor<User2>() {
+            @Override
+            public void visit(User2 element) {
+                System.out.print(element+"_");
+            }
+        });
         System.out.println();
         System.out.println("----------------------------------------");
     }
@@ -64,6 +85,13 @@ public class Main {
         }
 
         bst4.levelOrderTraversal(); //层序遍历
+        System.out.println();
+        bst4.levelOrder(new BinarySearchTree.Visitor<User2>() {
+            @Override
+            public void visit(User2 element) {
+                System.out.print(element+"_");
+            }
+        });
         System.out.println();
         System.out.println("----------------------------------------");
     }
