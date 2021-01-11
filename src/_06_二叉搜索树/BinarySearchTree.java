@@ -173,10 +173,10 @@ public class BinarySearchTree<E> {
     }
 
     //1、前序遍历
-    private void preOrder(Visitor<E> visitor){
+    public void preOrder(Visitor<E> visitor){
         preOrder(root,visitor);
     }
-    public void preOrder(Tree<E> node, Visitor<E> visitor){
+    private void preOrder(Tree<E> node, Visitor<E> visitor){
         if(node == null || visitor == null) return;
 
         visitor.visit(node.element);
@@ -185,10 +185,10 @@ public class BinarySearchTree<E> {
     }
 
     //2、中序遍历
-    private void inOrder(Visitor<E> visitor){
+    public void inOrder(Visitor<E> visitor){
         inOrder(root,visitor);
     }
-    public void inOrder(Tree<E> node, Visitor<E> visitor){
+    private void inOrder(Tree<E> node, Visitor<E> visitor){
         if(node == null || visitor == null) return;
 
         inOrder(node.left,visitor);
@@ -197,10 +197,10 @@ public class BinarySearchTree<E> {
     }
 
     //3、后序遍历
-    private void postOrder(Visitor<E> visitor){
+    public void postOrder(Visitor<E> visitor){
         postOrder(root,visitor);
     }
-    public void postOrder(Tree<E> node, Visitor<E> visitor){
+    private void postOrder(Tree<E> node, Visitor<E> visitor){
         if(node == null || visitor == null) return;
 
         postOrder(node.left,visitor);
