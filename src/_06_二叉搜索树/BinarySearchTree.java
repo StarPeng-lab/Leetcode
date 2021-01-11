@@ -1,6 +1,8 @@
 package _06_二叉搜索树;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinarySearchTree<E> {
 
@@ -148,6 +150,22 @@ public class BinarySearchTree<E> {
         postOrderTraversal(node.left);
         postOrderTraversal(node.right);
         System.out.println(node.element);
+    }
+
+    /*层序遍历*/
+    public void levelOrderTraversal(){
+        Queue<Tree<E>> queue = new LinkedList<>(); // 用队列存储节点，先根节点入队，之后开始重复：队头元素出队，把队头元素的左右子树入队
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            Tree<E> node = queue.poll();
+            System.out.println(node.element);
+            if(node.left != null){
+                queue.offer(node.left);
+            }
+            if(node.right != null){
+                queue.offer(node.right);
+            }
+        }
     }
 
 }
