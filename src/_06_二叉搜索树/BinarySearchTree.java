@@ -93,11 +93,6 @@ public class BinarySearchTree<E> {
 
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
-
     private int compare(E e1, E e2){
         if(comparator != null){
             //返回值>0 ，说明e1>e2；返回值=0 ，说明e1=e2；返回值<0，说明e1<e2
@@ -121,7 +116,7 @@ public class BinarySearchTree<E> {
         if(node == null)
             return;
 
-        System.out.println(node.element);
+        System.out.print(node.element+" ");
         preOrderTraversal(node.left);
         preOrderTraversal(node.right);
     }
@@ -135,7 +130,7 @@ public class BinarySearchTree<E> {
             return;
 
         inOrderTraversal(node.left);
-        System.out.println(node.element);
+        System.out.print(node.element+" ");
         inOrderTraversal(node.right);
     }
 
@@ -149,7 +144,7 @@ public class BinarySearchTree<E> {
 
         postOrderTraversal(node.left);
         postOrderTraversal(node.right);
-        System.out.println(node.element);
+        System.out.print(node.element+" ");
     }
 
     /*层序遍历*/
@@ -158,7 +153,7 @@ public class BinarySearchTree<E> {
         queue.offer(root);
         while(!queue.isEmpty()){
             Tree<E> node = queue.poll();
-            System.out.println(node.element);
+            System.out.print(node.element+" ");
             if(node.left != null){
                 queue.offer(node.left);
             }
