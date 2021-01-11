@@ -20,7 +20,7 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst1.add(data[i]);
         }
-        System.out.println(bst1);
+        bst1.preOrderTraversal(); //前序遍历
         System.out.println("----------------------------------------");
     }
 
@@ -30,7 +30,7 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst2.add(new User1(data[i]));
         }
-        System.out.println(bst2);
+        bst2.inOrderTraversal(); //中序遍历
         System.out.println("----------------------------------------");
     }
 
@@ -41,7 +41,7 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst3.add(new User2(data[i]));
         }
-        System.out.println(bst3);
+        bst3.postOrderTraversal(); //后序遍历
         System.out.println("----------------------------------------");
     }
 
@@ -56,11 +56,14 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst4.add(new User2(data[i]));
         }
-        System.out.println(bst4);
+        bst4.levelOrderTraversal(); //层序遍历
         System.out.println("----------------------------------------");
     }
 
     public static void main(String[] args) {
         test1();
+        test2();
+        test3();
+        test4();
     }
 }
