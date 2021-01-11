@@ -121,7 +121,7 @@ public class BinarySearchTree<E> {
         preOrderTraversal(node.right);
     }
 
-    /*中序遍历*/
+    /*中序遍历，比较逻辑是左小右大，中序遍历的数据按从小到大升序排序；如果比较逻辑为左大右小，那按降序排序*/
     public void inOrderTraversal(){
         inOrderTraversal(root);
     }
@@ -136,7 +136,7 @@ public class BinarySearchTree<E> {
 
     /*后序遍历*/
     public void postOrderTraversal(){
-        inOrderTraversal(root);
+        postOrderTraversal(root);
     }
     private void postOrderTraversal(Tree<E> node){
         if(node == null)
@@ -149,8 +149,12 @@ public class BinarySearchTree<E> {
 
     /*层序遍历*/
     public void levelOrderTraversal(){
+        if(root == null)
+            return;
+
         Queue<Tree<E>> queue = new LinkedList<>(); // 用队列存储节点，先根节点入队，之后开始重复：队头元素出队，把队头元素的左右子树入队
         queue.offer(root);
+
         while(!queue.isEmpty()){
             Tree<E> node = queue.poll();
             System.out.print(node.element+" ");
@@ -162,5 +166,70 @@ public class BinarySearchTree<E> {
             }
         }
     }
+
+    //设计一接口，允许外界遍历二叉树元素，即我们放权给外界，允许外界自由支配在遍历二叉树时，对元素的修改
+    public static interface Visitor<E>{ //一般内部类、内部接口都定义为static
+        void visit(E element); // public abstract void visit();
+    }
+
+    //1、前序遍历
+    private void preOrder(Visitor<E> visitor){
+        preOrder(root,visitor);
+    }
+    public void preOrder(Tree<E> node, Visitor<E> visitor){
+        if(node == null || visitor == null) return;
+
+        visitor.visit(node.element);
+        preOrder(node.left,visitor);
+        preOrder(node.right,visitor);
+    }
+
+    //2、中序遍历
+    private void inOrder(Visitor<E> visitor){
+        inOrder(root,visitor);
+    }
+    public void inOrder(Tree<E> node, Visitor<E> visitor){
+        if(node == null || visitor == null) return;
+
+        inOrder(node.left,visitor);
+        visitor.visit(node.element);
+        inOrder(node.right,visitor);
+    }
+
+    //3、后序遍历
+    private void postOrder(Visitor<E> visitor){
+        postOrder(root,visitor);
+    }
+    public void postOrder(Tree<E> node, Visitor<E> visitor){
+        if(node == null || visitor == null) return;
+
+        postOrder(node.left,visitor);
+        postOrder(node.right,visitor);
+        visitor.visit(node.element);
+    }
+
+    //4、层序遍历
+    public void levelOrder(Visitor<E> visitor){
+        if(root == null || visitor == null)
+            return;
+
+        Queue<Tree<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while(!queue.isEmpty()){
+            Tree<E> node = queue.poll();
+
+            visitor.visit(node.element);
+
+            if(node.left != null){
+                queue.offer(node.left);
+            }
+            if(node.right != null){
+                queue.offer(node.right);
+            }
+        }
+
+    }
+
 
 }
