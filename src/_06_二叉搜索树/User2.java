@@ -16,5 +16,8 @@ public class User2 {
         this.age = age;
     }
 
-
+    @Override
+    public String toString() {
+        return age+"";
+    }
 }

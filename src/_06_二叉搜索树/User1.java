@@ -16,6 +16,11 @@ public class User1 implements Comparable<User1>{ //Comparable<E>可以直接确�
     }
 
     @Override
+    public String toString() {
+        return age+"";
+    }
+
+    @Override
     public int compareTo(User1 u) {
         /*
         if(this.age > u.age)  return 1;

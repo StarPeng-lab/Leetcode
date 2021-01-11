@@ -12,7 +12,7 @@ public class Main {
         }
     }
 
-    static Integer data[] = new Integer[]{7,4,9,2,5,8,11,3};
+    static Integer data[] = new Integer[]{7,4,2,1,3,5,9,8,11,10,12};
 
     //1、二叉搜索树的元素类型为：基本数据类型的包装类
     public static void test1(){
@@ -20,7 +20,9 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst1.add(data[i]);
         }
+
         bst1.preOrderTraversal(); //前序遍历
+        System.out.println();
         System.out.println("----------------------------------------");
     }
 
@@ -30,7 +32,9 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst2.add(new User1(data[i]));
         }
+
         bst2.inOrderTraversal(); //中序遍历
+        System.out.println();
         System.out.println("----------------------------------------");
     }
 
@@ -41,7 +45,9 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst3.add(new User2(data[i]));
         }
+
         bst3.postOrderTraversal(); //后序遍历
+        System.out.println();
         System.out.println("----------------------------------------");
     }
 
@@ -56,7 +62,9 @@ public class Main {
         for(int i=0 ; i<data.length ; i++){
             bst4.add(new User2(data[i]));
         }
+
         bst4.levelOrderTraversal(); //层序遍历
+        System.out.println();
         System.out.println("----------------------------------------");
     }
 
