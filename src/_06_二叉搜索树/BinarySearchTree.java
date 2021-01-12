@@ -21,6 +21,12 @@ public class BinarySearchTree<E> {
             this.element = element;
             this.parent = parent;
         }
+
+        private boolean isLeaf(){
+            if(left == null && right == null)
+                return true;
+            return false;
+        }
     }
 
     public BinarySearchTree(){ //如果没有传入比较器对象，那么需要 E 本身是实现了Comparable接口的，里面有compareTo(E e)方法
@@ -108,6 +114,34 @@ public class BinarySearchTree<E> {
         }
     }
 
+    //是否是完全二叉树
+    public boolean isComplete(){
+        if(root == null)
+            return false;
+        Queue<Tree<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        boolean leaf = false;
+        while(!queue.isEmpty()){
+            Tree<E> node = queue.poll();
+            if(leaf && !node.isLeaf())
+                return false;
+
+            if(node.left != null){
+                queue.offer(node.left);
+            }else if(node.right != null){
+                return false;
+            }
+
+            if(node.right != null){
+                queue.offer(node.right);
+            }else{
+                leaf = true; // 后面遍历的所有界定啊都必须为叶子节点
+            }
+        }
+        return true;
+    }
+
     /*前序遍历*/
     public void preOrderTraversal(){
         preOrderTraversal(root);
@@ -168,44 +202,56 @@ public class BinarySearchTree<E> {
     }
 
     //设计一接口，允许外界遍历二叉树元素，即我们放权给外界，允许外界自由支配在遍历二叉树时，对元素的修改
-    public static interface Visitor<E>{ //一般内部类、内部接口都定义为static
+    /*public static interface Visitor<E>{ //一般内部类、内部接口都定义为static
         void visit(E element); // public abstract void visit();
+    }*/
+
+    //增强二叉树的遍历，允许到达某个节点后停止遍历：利用visit(E)的返回值，如果返回为true，则终止遍历；java中返回类型为boolean的方法默认返回值为false，因此false代表继续遍历
+    //用成员变量stop来接受visit(E)的返回值，由于接口中不允许设置成员变量，因此改为抽象类
+    public static abstract class Visitor<E>{
+        boolean stop; //stop不能放在抽象类外，这个变量应设置为线程私有；stop不能放在遍历方法中，因为要保持状态唯一；因此在Visitor抽象类中是最好的
+        abstract boolean visit(E element);
     }
 
     //1、前序遍历
     public void preOrder(Visitor<E> visitor){
+        if(visitor == null) return;
         preOrder(root,visitor);
     }
     private void preOrder(Tree<E> node, Visitor<E> visitor){
-        if(node == null || visitor == null) return;
+        if(node == null || visitor.stop == true) return;
 
-        visitor.visit(node.element);
+        visitor.stop = visitor.visit(node.element);
         preOrder(node.left,visitor);
         preOrder(node.right,visitor);
     }
 
     //2、中序遍历
     public void inOrder(Visitor<E> visitor){
+        if(visitor == null) return;
         inOrder(root,visitor);
     }
     private void inOrder(Tree<E> node, Visitor<E> visitor){
-        if(node == null || visitor == null) return;
+        if(node == null || visitor.stop == true) return; //这里的visitor为true时，方法不再往下遍历节点
 
         inOrder(node.left,visitor);
-        visitor.visit(node.element);
+        if(visitor.stop == true) //这里的visitor为true时，方法不再打印遍历到的节点，这里再次判断是为了让inOrder(node.left,visitor);中遍历到visit(E)的返回值为true的节点后，不再打印后面的节点
+            visitor.stop = visitor.visit(node.element);
         inOrder(node.right,visitor);
     }
 
     //3、后序遍历
     public void postOrder(Visitor<E> visitor){
+        if(visitor == null) return;
         postOrder(root,visitor);
     }
     private void postOrder(Tree<E> node, Visitor<E> visitor){
-        if(node == null || visitor == null) return;
+        if(node == null || visitor.stop == true) return;
 
         postOrder(node.left,visitor);
         postOrder(node.right,visitor);
-        visitor.visit(node.element);
+        if(visitor.stop == true)
+            visitor.stop = visitor.visit(node.element);
     }
 
     //4、层序遍历
@@ -219,7 +265,8 @@ public class BinarySearchTree<E> {
         while(!queue.isEmpty()){
             Tree<E> node = queue.poll();
 
-            visitor.visit(node.element);
+            if(visitor.visit(node.element)) //只要返回值为true，就停止方法，由于层序遍历没有递归，因此直接判断返回值即可
+                return;
 
             if(node.left != null){
                 queue.offer(node.left);
