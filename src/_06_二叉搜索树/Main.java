@@ -25,8 +25,9 @@ public class Main {
         System.out.println();
         bst1.preOrder(new BinarySearchTree.Visitor<Integer>(){
             @Override
-            public void visit(Integer element) {
+            public boolean visit(Integer element) {
                 System.out.print(element+"_");
+                return element == 9 ? true : false;
             }
         });
         System.out.println();
@@ -44,8 +45,9 @@ public class Main {
         System.out.println();
         bst2.inOrder(new BinarySearchTree.Visitor<User1>() {
             @Override
-            public void visit(User1 element) {
-                System.out.print(element+"_");
+            public boolean visit(User1 user) {
+                System.out.print(user+"_");
+                return user.getAge() == 9 ? true : false;
             }
         });
         System.out.println();
@@ -64,8 +66,9 @@ public class Main {
         System.out.println();
         bst3.postOrder(new BinarySearchTree.Visitor<User2>() {
             @Override
-            public void visit(User2 element) {
-                System.out.print(element+"_");
+            public boolean visit(User2 user) {
+                System.out.print(user+"_");
+                return user.getAge() == 9 ? true : false;
             }
         });
         System.out.println();
@@ -88,8 +91,9 @@ public class Main {
         System.out.println();
         bst4.levelOrder(new BinarySearchTree.Visitor<User2>() {
             @Override
-            public void visit(User2 element) {
-                System.out.print(element+"_");
+            public boolean visit(User2 user) {
+                System.out.print(user+"_");
+                return user.getAge() == 9 ? true : false ;
             }
         });
         System.out.println();
