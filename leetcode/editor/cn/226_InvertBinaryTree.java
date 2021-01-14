@@ -41,6 +41,7 @@ public class InvertBinaryTree{
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
+        //这道题先考虑，能遍历到每个节点，再考虑将每个节点的左右子树进行交换
         //遍历到的每个节点下方左右子树进行交换，直到遍历的节点为null(遍历到的节点可以是根节点，可以是叶子节点)
         //方法一：按中序遍历
         /*
@@ -52,7 +53,7 @@ class Solution {
         root.left = root.right;
         root.right = tmp;
 
-        invertTree(root.left); //这里的root.left相当与中序遍历中的右子树，因为右子树在上面已经交换到root.left了
+        invertTree(root.left); //这里的root.left相当于中序遍历中的右子树，因为右子树在上面已经交换到root.left了
 
         return root;*/
 
@@ -65,7 +66,7 @@ class Solution {
         root.right = root.left;
         root.left = tmp;
 
-        invertTree(root.left);
+        invertTree(root.left); //除了中序遍历，其他遍历无需考虑交换了左右子树之后继续遍历的是左还是右，因为都会遍历到的，这里可以不分先后
         invertTree(root.right);
 
         return root;*/
