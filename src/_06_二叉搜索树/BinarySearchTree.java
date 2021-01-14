@@ -236,7 +236,8 @@ public class BinarySearchTree<E> {
 
         inOrder(node.left,visitor);
         if(visitor.stop == true) //这里的visitor为true时，方法不再打印遍历到的节点，这里再次判断是为了让inOrder(node.left,visitor);中遍历到visit(E)的返回值为true的节点后，不再打印后面的节点
-            visitor.stop = visitor.visit(node.element);
+            return;
+        visitor.stop = visitor.visit(node.element);
         inOrder(node.right,visitor);
     }
 
@@ -251,7 +252,8 @@ public class BinarySearchTree<E> {
         postOrder(node.left,visitor);
         postOrder(node.right,visitor);
         if(visitor.stop == true)
-            visitor.stop = visitor.visit(node.element);
+            return;
+        visitor.stop = visitor.visit(node.element);
     }
 
     //4、层序遍历
