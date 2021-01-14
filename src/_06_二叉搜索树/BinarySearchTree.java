@@ -23,9 +23,8 @@ public class BinarySearchTree<E> {
         }
 
         private boolean isLeaf(){
-            if(left == null && right == null)
-                return true;
-            return false;
+            return left == null && right == null;
+
         }
     }
 
@@ -115,7 +114,7 @@ public class BinarySearchTree<E> {
     }
 
     @Override
-    public String toString() { //采用前序遍历打印出树状结构
+    public String toString() { //一般采用前序遍历打印出树状结构
         StringBuilder sb = new StringBuilder("");
         toString1(root,sb,"");
         return sb.toString();
@@ -141,32 +140,114 @@ public class BinarySearchTree<E> {
         toString3(node.right , sb , prefix+"R---");
         sb.append(prefix).append(node.element).append("\n");
     }
+    private void toString4(Tree<E> node, StringBuilder sb, String prefix){ //层序遍历
+        if(node == null) return; //这里的node就是root
+
+        int levelSize = 1;
+
+        Queue<Tree<E>> queue = new LinkedList<>();
+        queue.offer(node);
+        while(!queue.isEmpty()){
+            Tree<E> temp = queue.poll();
+            sb.append(temp.element).append("---");
+            levelSize--;
+
+            if(temp.left != null){
+                queue.offer(temp.left);
+            }
+            if(temp.right != null){
+                queue.offer(temp.right);
+            }
+
+            if(levelSize == 0){ //说明开始遍历下一层的节点，重新对levelSize赋值，并给sb拼接换行符
+                levelSize = queue.size();
+                sb.append("\n");
+            }
+        }
+    }
+
+    //判断树的高度（即判断 根节点root的高度）
+    public int heigth(){
+        return nodeHeight2(root);
+    }
+    //方法一：递归
+    private int nodeHeight1(Tree<E> node){ //计算节点的高度
+        if(node == null)
+            return 0 ;
+        return 1 + Math.max(nodeHeight1(node.left) , nodeHeight1(node.right)); //当前节点所在的一层 + 左子树和右子树中的层数最大值
+    }
+    //方法二：迭代，利用层序遍历
+    private int nodeHeight2(Tree<E> node){
+        if(node == null) return 0;
+
+        int levelSize = 1; //记录每一层的节点数，初始值设为1，代表根节点所在层数
+        int height = 0; //树的高度从0开始计算
+        Queue<Tree<E>> queue = new LinkedList<>();
+        queue.offer(node);
+
+        while(!queue.isEmpty()){
+            Tree<E> temp = queue.poll();
+            levelSize--;
+
+            if(temp.left != null){
+                queue.offer(temp.left);
+            }
+            if(temp.right != null){
+                queue.offer(temp.right);
+            }
+
+            if(levelSize == 0){ //说明这一层的节点已全部出队列，此时的队列中存的是下一层的全部节点，即意味着开始遍历下一层的节点
+                levelSize = queue.size();
+                height++;
+            }
+        }
+        return height;
+    }
 
 
-    //是否是完全二叉树
+    //是否是完全二叉树，利用队列，用层序遍历的方式遍历节点
     public boolean isComplete(){
         if(root == null)
             return false;
+
         Queue<Tree<E>> queue = new LinkedList<>();
         queue.offer(root);
 
         boolean leaf = false;
+
         while(!queue.isEmpty()){
             Tree<E> node = queue.poll();
+
             if(leaf && !node.isLeaf())
                 return false;
 
+            /*if(node.left != null && node.right != null){ //1、如果节点有左右子树，那么将左右子树入队
+                queue.offer(node.left);
+                queue.offer(node.right);
+            }else if(node.left == null && node.right != null){ //2、如果节点只有右子树，则说明不是完全二叉树
+                return false;
+            }else{ //3、其他情况：节点有左子树，但没有右子树；或节点没有左右子树；这两种情况说明之后遍历的节点都必须是叶子节点，否则就不是完全二叉树
+                leaf = true;
+                if(node.left != null){
+                    queue.offer(node.left);
+                }
+            }*/
+            //另一种方式：这个方法可以减少重复判断
+            // 建议先把层序遍历的框架写出来，保证每个节点都能入队；再进行具体操作
             if(node.left != null){
                 queue.offer(node.left);
-            }else if(node.right != null){
+            }else if(node.right != null){ //node.left == null && node.right != null
                 return false;
             }
 
             if(node.right != null){
                 queue.offer(node.right);
             }else{
-                leaf = true; // 后面遍历的所有界定啊都必须为叶子节点
+                //node.left != null && node.right == null ;
+                //node.left == null && node.right == null
+                leaf = true;
             }
+
         }
         return true;
     }

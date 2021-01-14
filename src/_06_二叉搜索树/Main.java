@@ -101,10 +101,32 @@ public class Main {
         System.out.println("----------------------------------------");
     }
 
+    //5、计算二叉树的高度
+    public static void test5(){
+        int[] num = new int[]{7,4,9,2,5,8,11,1,3,10,12};
+        BinarySearchTree<Integer> bst5 = new BinarySearchTree<>();
+        for(int i=0 ; i<num.length ; i++){
+            bst5.add(num[i]);
+        }
+        System.out.println(bst5.heigth());
+    }
+
+    //6、测试是否是完全二叉树
+    public static void test6(){
+        int[] num = new int[]{7,4,9,2,5,8,11,1,3,10,12}; //采用层序遍历收集节点值，转为数组
+        BinarySearchTree<Integer> bst6 = new BinarySearchTree<>();
+        for(int i=0 ; i<num.length ; i++){
+            bst6.add(num[i]);
+        }
+        System.out.println(bst6.isComplete()); //false
+    }
+
     public static void main(String[] args) {
-        test1();
+       /* test1();
         test2();
         test3();
         test4();
+        test5();*/
+        test6();
     }
 }
