@@ -114,6 +114,35 @@ public class BinarySearchTree<E> {
         }
     }
 
+    @Override
+    public String toString() { //采用前序遍历打印出树状结构
+        StringBuilder sb = new StringBuilder("");
+        toString1(root,sb,"");
+        return sb.toString();
+    }
+    private void toString1(Tree<E> node, StringBuilder sb, String prefix){ //前序遍历
+        if(node == null) return;
+
+        sb.append(prefix).append(node.element).append("\n"); //拼接 前缀 节点值 换行符
+        toString1(node.left , sb , prefix+"L---"); //开始遍历左子树，并将前面拼接好的值sb传入，继续传入前缀 prefix+"L---"
+        toString1(node.right , sb , prefix+"R---");
+    }
+    private void toString2(Tree<E> node, StringBuilder sb, String prefix){ //中序遍历
+        if(node == null) return;
+
+        toString2(node.left , sb , prefix+"L---");
+        sb.append(prefix).append(node.element).append("\n");
+        toString2(node.right , sb , prefix+"R---");
+    }
+    private void toString3(Tree<E> node, StringBuilder sb, String prefix){ //后序遍历
+        if(node == null) return;
+
+        toString3(node.left , sb , prefix+"L---");
+        toString3(node.right , sb , prefix+"R---");
+        sb.append(prefix).append(node.element).append("\n");
+    }
+
+
     //是否是完全二叉树
     public boolean isComplete(){
         if(root == null)
