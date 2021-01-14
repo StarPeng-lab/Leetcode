@@ -72,6 +72,7 @@ class Solution {
         return root;*/
 
         //方法三：按后序遍历
+        /*
         if(root==null)
             return root;
 
@@ -81,6 +82,29 @@ class Solution {
         TreeNode tmp = root.left;
         root.left = root.right;
         root.right = tmp;
+
+        return root;*/
+
+        //方法四、层序遍历
+        if(root == null) return root;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while(!queue.isEmpty()){
+            TreeNode node = queue.poll();
+
+            TreeNode tmp = node.left;
+            node.left = node.right;
+            node.right = tmp;
+
+            if(node.left != null){
+                queue.offer(node.left);
+            }
+            if(node.right != null){
+                queue.offer(node.right);
+            }
+        }
 
         return root;
     }
