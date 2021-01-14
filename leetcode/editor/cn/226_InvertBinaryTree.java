@@ -43,32 +43,44 @@ class Solution {
     public TreeNode invertTree(TreeNode root) {
         //遍历到的每个节点下方左右子树进行交换，直到遍历的节点为null(遍历到的节点可以是根节点，可以是叶子节点)
         //方法一：按中序遍历
-        /*if(root==null) return root;
+        /*
+        if(root==null) return root;
+
         invertTree(root.left);
+
         TreeNode tmp = root.left;
         root.left = root.right;
         root.right = tmp;
+
         invertTree(root.left); //这里的root.left相当与中序遍历中的右子树，因为右子树在上面已经交换到root.left了
+
         return root;*/
 
         //方法二：按前序遍历
-        /*if(root==null)
+        /*
+        if(root==null)
             return root;
+
         TreeNode tmp = root.right;
         root.right = root.left;
         root.left = tmp;
+
         invertTree(root.left);
         invertTree(root.right);
+
         return root;*/
 
         //方法三：按后序遍历
         if(root==null)
             return root;
+
         invertTree(root.left);
         invertTree(root.right);
+
         TreeNode tmp = root.left;
         root.left = root.right;
         root.right = tmp;
+
         return root;
     }
 }
