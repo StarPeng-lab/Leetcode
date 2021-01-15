@@ -77,7 +77,7 @@ public class BinaryTreeInorderTraversal{
  * }
  */
 class Solution {
-   /* 方法一：递归
+   /* 递归
    public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
         inOrder(root,list);
@@ -91,8 +91,11 @@ class Solution {
         inOrder(node.right , list);
     }*/
 
-    //方法二：迭代（利用栈）
-    /*public List<Integer> inorderTraversal(TreeNode root) {
+    //迭代：方法一
+    //从根节点开始遍历，一直遍历根节点的左子树，直到节点为null，将遍历到的所有节点入栈
+    //之后弹出栈顶节点root
+    //直接将栈顶节点root的值添加到list，由于root的左子树确定为null，因此之后开始遍历root.right
+    public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
 
@@ -106,9 +109,9 @@ class Solution {
             root = root.right; //遍历栈顶节点的右子树
         }
         return list;
-    }*/
+    }
 
-    //方法三：颜色标记法
+    //方法二：颜色标记法
     /*其核心思想如下：
         使用颜色标记节点的状态，新节点为白色，已访问的节点为灰色。
         如果遇到的节点为白色，则将其标记为灰色，然后将其右子节点、自身、左子节点依次入栈。
@@ -152,9 +155,10 @@ class Solution {
         return list;
     }
 */
+
     //使用一个颜色或者任何东西，记录节点的访问次数。在中序中，节点第二次访问会被输出。因此使用颜色，
     // 或者hash表来记录节点的访问次数，次数使用hash表来记录
-    public List<Integer> inorderTraversal(TreeNode root) {
+    /*public List<Integer> inorderTraversal(TreeNode root) {
 
         HashMap<TreeNode, Integer> map = new HashMap<>();
         Stack<TreeNode> stack = new Stack<>();
@@ -192,7 +196,7 @@ class Solution {
             }
         }
         return  list;
-    }
+    }*/
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
