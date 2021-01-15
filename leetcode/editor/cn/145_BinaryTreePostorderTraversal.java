@@ -152,9 +152,11 @@ class Solution {
      * 但是，它并没有真正实现“遍历”——仔细看会发现，该算法其实在使用一种异构的前序遍历：“中->右->左”，而非传统意义上的“中->左->右”，而这种异构也正是它的第一次反转。而第二次反转就在输出序列上。
      * 所以本质上，这是一个“前序遍历”，而不是所谓的“后序遍历”。只有当你的各个节点以“左->右->中”的次序依次出现在迭代的loop当中时，它才是真正的后序遍历
      */
-    //方法四：后序遍历即是前序遍历的翻转，前序遍历是往后加元素；后序遍历是往前加元素
-    //       要么LinkedList+栈：利用LinkedList的addFirst存储节点（即类似reverse反转 栈中出来的节点）
-    //       要么LinkedList+LinkedList，利用LinkedList的addFirst存储节点，利用LinkedList的addFirst,removeFirst遍历节点
+    //方法四：
+    // 后序遍历即是前序遍历的翻转，它们都可以通过 LinkedList->栈，push存储节点，pop遍历节点
+    //                               或 LinkedList->双端队列，addFirst存储节点，removeFirst遍历节点
+    // 区别一，在添加到stack时，都是先添加stack弹出的栈顶元素，然后前序遍历是先遍历右子树入栈，再遍历左子树入栈；后序遍历是先遍历左子树入栈，再遍历右子树入栈
+    // 区别二，在添加到list时，前序遍历是list往后加元素addLast；后序遍历是往前加元素addFirst（即类似reverse反转 栈中出来的节点）；注意list的类型为LinkedList，因为要用addLast
     /*public List<Integer> postorderTraversal(TreeNode root){
         LinkedList<Integer> list = new LinkedList<>(); //由于要用到LinkedList类的addFirst()，因此这里不用List
         if(root == null)
