@@ -55,7 +55,7 @@ class Solution {
         }
         return res;
     }
-    private int area(int[][] grid , int r , int c){
+    private int area(int[][] grid , int r , int c){ //每遍历到一个格子，就把面积加一；由于传入的grid[r][c]是确定为岛屿的，因此岛屿的面积从1算起
         if(!inArea(grid , r , c))
             return 0;
 
