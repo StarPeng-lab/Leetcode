@@ -76,6 +76,62 @@ class Solution {
         dfs(board,r,c+1);
         dfs(board,r,c-1);
     }
+
+    /*广度优先算法 + 迭代：（耗时更久）
+    public void solve(char[][] board) {
+        int m = board.length;
+        if(m==0)
+            return;
+        int n = board[0].length;
+
+        int[] dx = new int[]{0,0,1,-1};
+        int[] dy = new int[]{1,-1,0,0};
+
+        Queue<int[]> queue = new LinkedList<>();
+        for(int r = 0 ; r < m ; r++){
+            if(board[r][0] == 'O'){
+                queue.offer(new int[]{r,0}); //第一列
+            }
+            if(board[r][n-1] == 'O'){
+                queue.offer(new int[]{r,n-1}); //最后一列
+            }
+        }
+        for(int c = 0 ; c < n ; c++){
+            if(board[0][c] == 'O'){
+                queue.offer(new int[]{0,c}); //第一行
+            }
+            if(board[m-1][c] == 'O'){
+                queue.offer(new int[]{m-1,c}); //最后一行
+            }
+        }
+
+        while(!queue.isEmpty()){
+            int[] tmp = queue.poll();
+            int x = tmp[0];
+            int y = tmp[1];
+            board[x][y] = 'A'; //将board[x][y]=O，标记为A
+
+            for(int i = 0 ; i < 4 ; i++){ //遍历board[x][y]的上下左右
+                int mx = x + dx[i];
+                int my = y + dy[i];
+                if(mx<0 || mx>=m || my<0 || my>=n || board[mx][my] != 'O')
+                    continue;
+
+                queue.offer(new int[]{mx,my}); //board[mx][my] == 'O'
+            }
+
+        }
+
+        for(int r = 0 ; r < m ; r++){
+            for(int c = 0 ; c < n ; c++){
+                if(board[r][c] == 'O'){
+                    board[r][c] = 'X';
+                }else if(board[r][c] == 'A'){
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }*/
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
