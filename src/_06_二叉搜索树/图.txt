@@ -9,7 +9,35 @@
 
 
 深度优先算法：
-练习：
+DFS（深度优先搜索）问题通常是在树或者图结构上进行的。
+树的DFS遍历：
+    void traversal(TreeNode node){
+        if(node == null) // 1、判断base base
+            return;
+        traversal(node.left); // 2、访问相邻节点
+        traversal(node.right);
+    }
+图的DFS遍历：
+    今天要讨论的 DFS 问题，是在一种「网格」结构中进行的。
+    岛屿问题是这类网格 DFS 问题的典型代表。
+
+    void dfs(int[][] grid, int r, int c){
+        if(!inArea(grid,r,c) //1、判断base base
+            return;
+        if(grid[r][c] != 1) //避免重复遍历，0-海洋；1-岛屿
+            return;
+
+        dfs(grid, r - 1, c); //2、访问上、下、左、右四个相邻结点
+        dfs(grid, r + 1, c);
+        dfs(grid, r, c - 1);
+        dfs(grid, r, c + 1);
+    }
+    boolean inArea(int[][] grid, int r, int c) { // 判断坐标 (r, c) 是否在网格中
+        return 0 <= r && r < grid.length
+            	&& 0 <= c && c < grid[0].length;
+    }
+
+    练习：
      695、岛屿的最大面积
      827、最大人工岛
      463、岛屿的周长
