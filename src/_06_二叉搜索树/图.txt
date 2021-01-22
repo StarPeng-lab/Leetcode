@@ -1,23 +1,57 @@
 层序遍历用到的是广度优先算法
 
-深度优先算法dfs：
+深度优先算法dfs：通常是在树或者图结构上进行的。
     递归。最常用，如二叉树的先序遍历。
     非递归。一般用 stack存储。
 广度优先算法bfs：
     递归。可以想想二叉树中如何递归的进行层序遍历。
     非递归。一般用 队列queue存储。
 
+如果我们使用 DFS/BFS 只是为了遍历一棵树、一张图上的所有结点的话，那么 DFS 和 BFS 的能力没什么差别，
+我们当然更倾向于更方便写、空间复杂度更低的 DFS 遍历。
 
-深度优先算法：
-DFS（深度优先搜索）问题通常是在树或者图结构上进行的。
-树的DFS遍历：
+不过，某些使用场景是 DFS 做不到的，只能使用 BFS 遍历。有两个场景：「层序遍历」、「最短路径」。
+「层序遍历」
+  * 练习：102、二叉树的层序遍历
+「最短路径」
+  在二叉树中，BFS 可以实现一层一层的遍历。在图中同样如此。
+  从源点出发，BFS 首先遍历到第一层结点，到源点的距离为 1，然后遍历到第二层结点，到源点的距离为 2……
+  可以看到，用 BFS 的话，距离源点更近的点会先被遍历到，这样就能找到到某个点的最短路径了；
+  Dijkstra 算法解决的是带权最短路径问题，而我们这里关注的是无权最短路径问题。也可以看成每条边的权重都是 1。这样的最短路径问题，用 BFS 求解就行了
+  * 练习：1162、地图分析（这道题就是一个在网格结构中求最短路径的问题。同时，它也是一个「岛屿问题」）
+
+
+
+
+1、树
+* 树的DFS遍历：
     void traversal(TreeNode node){
         if(node == null) // 1、判断base base
             return;
+
         traversal(node.left); // 2、访问相邻节点
         traversal(node.right);
     }
-图的DFS遍历：
+* 树的BFS遍历（使用队列）：树的层序遍历还需要设置输出，一层一层输出
+    void bfs(TreeNode root) {
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+    }
+因为递归的方式隐含地使用了系统的 栈，我们不需要自己维护一个数据结构。如果只是简单地将二叉树遍历一遍，那么 DFS 显然是更方便的选择
+
+2、网格结构是一种特殊的图，它的表示和遍历都比较简单，适合作为练习题。在 LeetCode 中，「最短路径」问题也以网格结构为主。
+* 图的DFS遍历：
     今天要讨论的 DFS 问题，是在一种「网格」结构中进行的。
     岛屿问题是这类网格 DFS 问题的典型代表。
 
@@ -37,10 +71,39 @@ DFS（深度优先搜索）问题通常是在树或者图结构上进行的。
             	&& 0 <= c && c < grid[0].length;
     }
 
-    练习：
+    岛屿问题（网格结构中的DFS）练习：
      695、岛屿的最大面积
      827、最大人工岛
      463、岛屿的周长
 
      200、岛屿数量
      130、被围绕的区域
+
+* 图的BFS遍历：
+ 练习：1162、地图分析
+ 要解最短路径问题，我们首先要写出层序遍历的代码，仿照上面的二叉树层序遍历代码，类似地可以写出网格层序遍历
+
+ void bfs(int[][] grid, int r, int c) {  // 网格结构的层序遍历，从格子 (r, c) 开始遍历
+     Queue<int[]> queue = new ArrayDeque<>();
+     queue.add(new int[]{r, c});
+     int[][] moves = {
+         {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+     };
+     while (!queue.isEmpty()) {
+         int n = queue.size();
+         for (int i = 0; i < n; i++) {
+             int[] node = queue.poll();
+             int r = node[0];
+             int c = node[1];
+
+             for (int[] move : moves) { //遍历上下左右
+                 int r2 = r + move[0];
+                 int c2 = c + move[1];
+                 if (inArea(grid, r2, c2) && grid[r2][c2] == 0) {
+                     grid[r2][c2] = 2;
+                     queue.add(new int[]{r2, c2});
+                 }
+             }
+         }
+     }
+ }
