@@ -70,11 +70,17 @@ class Solution {
         if (null == root) {
             return 0;
         }
-        int result = 1;
+
+        int depth = 0;
         for (Node child : root.children) {
-            result = Math.max(result, 1 + maxDepth(child));
+            depth = Math.max(depth, maxDepth(child));
         }
-        return result;
+        return depth + 1;
+        /*int depth = 1;
+        for (Node child : root.children) {
+            depth = Math.max(depth, 1 + maxDepth(child));
+        }
+        return depth;*/
     }
 
     //递归，方法二：
