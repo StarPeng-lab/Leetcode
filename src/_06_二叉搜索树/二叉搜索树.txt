@@ -38,3 +38,30 @@
      590、N叉数的后序遍历
      559、N叉数的最大深度
 
+9、已知【前序遍历+中序遍历】结果，可以推导出唯一一棵二叉树；
+   已知【后序遍历+中序遍历】结果，可以推导出唯一一棵二叉树；
+   已知【前序遍历+后序遍历】结果，如果这是一棵真二叉树，那么可以推导出唯一一棵二叉树；如果不是，那么结果不唯一；
+   推导的条件：已知根节点，并且可以区分左右子树；
+
+10、前驱节点：中序遍历时的前一个节点；
+            如果是二叉搜索树，那么前驱节点就是前一个比它小的节点；
+    a、if(node.left != null)
+       predecessor = node.left.right.right.right......
+       终止条件：right == null
+    b、if(node.left == null && node.parent != null)
+       predecessor = node.parent.parent.parent......
+       终止条件：node在parant的 右子树 中，此时的parent为前驱节点；如果到最后都不在parent的右子树中，那么没有前驱节点（例如中序遍历的第一个节点）
+    c、if(node.left == null && node.parent == null)
+       那么没有前驱节点（例如没有左子树的根节点）
+11、后继节点：中序遍历时的后一个节点；
+            如果是二叉搜索树，那么后继结点就是后一个比它大的节点；
+    a、if(node.right != null)
+       predecessor = node.right.left.left.left......
+       终止条件：left == null
+    b、if(node.right == null && node.parent != null)
+       predecessor = node.parent.parent.parent......
+       终止条件：node在parent的 左子树 中，此时的parent为后继节点；如果到最后都不在parent的左子树中，那么没有后继节点（例如中序遍历的最后一个节点）
+    c、if(node.right == null && node.parent == null)
+       那么没有后继节点（例如没有右子树的根节点）
+
+

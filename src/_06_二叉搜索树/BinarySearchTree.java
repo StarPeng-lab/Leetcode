@@ -7,17 +7,17 @@ import java.util.Queue;
 public class BinarySearchTree<E> {
 
     private int size;
-    private Tree<E> root;
+    private TreeNode<E> root;
     private Comparator<E> comparator;
 
-    private static class Tree<E>{
+    private static class TreeNode<E>{
 
         private E element;
-        private Tree<E> parent;
-        private Tree<E> left;
-        private Tree<E> right;
+        private TreeNode<E> parent;
+        private TreeNode<E> left;
+        private TreeNode<E> right;
 
-        public Tree(E element , Tree<E> parent){
+        public TreeNode(E element , TreeNode<E> parent){
             this.element = element;
             this.parent = parent;
         }
@@ -57,13 +57,13 @@ public class BinarySearchTree<E> {
         elementNotNullCheck(element);
 
         if(root == null){
-            root = new Tree<E>(element,null);
+            root = new TreeNode<E>(element,null);
             size++;
             return;
         }
 
-        Tree<E> node = root; //找到根节点，从根节点开始遍历
-        Tree<E> parent = null; //记录父节点
+        TreeNode<E> node = root; //找到根节点，从根节点开始遍历
+        TreeNode<E> parent = null; //记录父节点
         int com = 0; //局部变量，JVM不会为其初始化
         while(node != null){
 
@@ -82,7 +82,7 @@ public class BinarySearchTree<E> {
         }
 
         //定义要插入的节点，并确定要插入到父节点的哪个位置
-        node = new Tree<E>(element,parent);
+        node = new TreeNode<E>(element,parent);
         if(com > 0){
             parent.right = node;
         }else if(com < 0){
@@ -119,36 +119,36 @@ public class BinarySearchTree<E> {
         toString1(root,sb,"");
         return sb.toString();
     }
-    private void toString1(Tree<E> node, StringBuilder sb, String prefix){ //前序遍历
+    private void toString1(TreeNode<E> node, StringBuilder sb, String prefix){ //前序遍历
         if(node == null) return;
 
         sb.append(prefix).append(node.element).append("\n"); //拼接 前缀 节点值 换行符
         toString1(node.left , sb , prefix+"L---"); //开始遍历左子树，并将前面拼接好的值sb传入，继续传入前缀 prefix+"L---"
         toString1(node.right , sb , prefix+"R---");
     }
-    private void toString2(Tree<E> node, StringBuilder sb, String prefix){ //中序遍历
+    private void toString2(TreeNode<E> node, StringBuilder sb, String prefix){ //中序遍历
         if(node == null) return;
 
         toString2(node.left , sb , prefix+"L---");
         sb.append(prefix).append(node.element).append("\n");
         toString2(node.right , sb , prefix+"R---");
     }
-    private void toString3(Tree<E> node, StringBuilder sb, String prefix){ //后序遍历
+    private void toString3(TreeNode<E> node, StringBuilder sb, String prefix){ //后序遍历
         if(node == null) return;
 
         toString3(node.left , sb , prefix+"L---");
         toString3(node.right , sb , prefix+"R---");
         sb.append(prefix).append(node.element).append("\n");
     }
-    private void toString4(Tree<E> node, StringBuilder sb, String prefix){ //层序遍历
+    private void toString4(TreeNode<E> node, StringBuilder sb, String prefix){ //层序遍历
         if(node == null) return; //这里的node就是root
 
         int levelSize = 1;
 
-        Queue<Tree<E>> queue = new LinkedList<>();
+        Queue<TreeNode<E>> queue = new LinkedList<>();
         queue.offer(node);
         while(!queue.isEmpty()){
-            Tree<E> temp = queue.poll();
+            TreeNode<E> temp = queue.poll();
             sb.append(temp.element).append("---");
             levelSize--;
 
@@ -171,22 +171,22 @@ public class BinarySearchTree<E> {
         return nodeHeight2(root);
     }
     //方法一：递归
-    private int nodeHeight1(Tree<E> node){ //计算节点的高度
+    private int nodeHeight1(TreeNode<E> node){ //计算节点的高度
         if(node == null)
             return 0 ;
         return 1 + Math.max(nodeHeight1(node.left) , nodeHeight1(node.right)); //当前节点所在的一层 + 左子树和右子树中的层数最大值
     }
     //方法二：迭代，利用层序遍历
-    private int nodeHeight2(Tree<E> node){
+    private int nodeHeight2(TreeNode<E> node){
         if(node == null) return 0;
 
         int levelSize = 1; //记录每一层的节点数，初始值设为1，代表根节点所在层数
         int height = 0; //树的高度从0开始计算
-        Queue<Tree<E>> queue = new LinkedList<>();
+        Queue<TreeNode<E>> queue = new LinkedList<>();
         queue.offer(node);
 
         while(!queue.isEmpty()){
-            Tree<E> temp = queue.poll();
+            TreeNode<E> temp = queue.poll();
             levelSize--;
 
             if(temp.left != null){
@@ -210,13 +210,13 @@ public class BinarySearchTree<E> {
         if(root == null)
             return false;
 
-        Queue<Tree<E>> queue = new LinkedList<>();
+        Queue<TreeNode<E>> queue = new LinkedList<>();
         queue.offer(root);
 
         boolean leaf = false;
 
         while(!queue.isEmpty()){
-            Tree<E> node = queue.poll();
+            TreeNode<E> node = queue.poll();
 
             if(leaf && !node.isLeaf())
                 return false;
@@ -252,11 +252,56 @@ public class BinarySearchTree<E> {
         return true;
     }
 
+    //得到node节点的【前驱节点】
+    private TreeNode<E> predecessor(TreeNode<E> node){
+        if(node == null)
+            return null;
+
+        TreeNode<E> p = node.left;
+        if(p != null){ //node.left != null , node.left.right.right......（前驱节点在左子树中）
+            while(p.right != null){
+                p = p.right;
+            }
+            return p;
+        }
+
+        while(node.parent != null && node == node.parent.left){ //node.left == null && node.parent != null（从父节点、祖父节点中寻找，前驱节点在父节点的右子树中）
+           node = node.parent;
+        }
+
+        //node = node.parent.right --> 前驱节点为node.parent
+        //node.left == null && node.parent == null  --> 没有前驱节点
+        return node.parent;
+    }
+
+    //得到节点的【后继节点】
+    private TreeNode<E> successor(TreeNode<E> node){
+        if(node == null)
+            return null;
+
+        TreeNode<E> p = node.right; //node.right != null , node.right.left.left.left......
+        if(p != null){
+            while(p.left != null){
+                p = p.left;
+            }
+            return p;
+        }
+
+        if(node.parent != null && node == node.parent.right){ //node.right == null && node.parent != null（从父节点、祖父节点中寻找，后继节点在父节点的左子树中）
+            node = node.parent;
+        }
+
+        //node = node.parent = node.parent.left -> 后继节点为node.parent
+        //node.right == null && node.parent == null -> 没有后继节点
+        return node.parent;
+    }
+
+
     /*前序遍历*/
     public void preOrderTraversal(){
         preOrderTraversal(root);
     }
-    private void preOrderTraversal(Tree<E> node){
+    private void preOrderTraversal(TreeNode<E> node){
         if(node == null)
             return;
 
@@ -269,7 +314,7 @@ public class BinarySearchTree<E> {
     public void inOrderTraversal(){
         inOrderTraversal(root);
     }
-    private void inOrderTraversal(Tree<E> node){
+    private void inOrderTraversal(TreeNode<E> node){
         if(node == null)
             return;
 
@@ -282,7 +327,7 @@ public class BinarySearchTree<E> {
     public void postOrderTraversal(){
         postOrderTraversal(root);
     }
-    private void postOrderTraversal(Tree<E> node){
+    private void postOrderTraversal(TreeNode<E> node){
         if(node == null)
             return;
 
@@ -296,11 +341,11 @@ public class BinarySearchTree<E> {
         if(root == null)
             return;
 
-        Queue<Tree<E>> queue = new LinkedList<>(); // 用队列存储节点，先根节点入队，之后开始重复：队头元素出队，把队头元素的左右子树入队
+        Queue<TreeNode<E>> queue = new LinkedList<>(); // 用队列存储节点，先根节点入队，之后开始重复：队头元素出队，把队头元素的左右子树入队
         queue.offer(root);
 
         while(!queue.isEmpty()){
-            Tree<E> node = queue.poll();
+            TreeNode<E> node = queue.poll();
             System.out.print(node.element+" ");
             if(node.left != null){
                 queue.offer(node.left);
@@ -328,7 +373,7 @@ public class BinarySearchTree<E> {
         if(visitor == null) return;
         preOrder(root,visitor);
     }
-    private void preOrder(Tree<E> node, Visitor<E> visitor){
+    private void preOrder(TreeNode<E> node, Visitor<E> visitor){
         if(node == null || visitor.stop == true) return;
 
         visitor.stop = visitor.visit(node.element);
@@ -341,7 +386,7 @@ public class BinarySearchTree<E> {
         if(visitor == null) return;
         inOrder(root,visitor);
     }
-    private void inOrder(Tree<E> node, Visitor<E> visitor){
+    private void inOrder(TreeNode<E> node, Visitor<E> visitor){
         if(node == null || visitor.stop == true) return; //这里的visitor为true时，方法不再往下遍历节点
 
         inOrder(node.left,visitor);
@@ -356,7 +401,7 @@ public class BinarySearchTree<E> {
         if(visitor == null) return;
         postOrder(root,visitor);
     }
-    private void postOrder(Tree<E> node, Visitor<E> visitor){
+    private void postOrder(TreeNode<E> node, Visitor<E> visitor){
         if(node == null || visitor.stop == true) return;
 
         postOrder(node.left,visitor);
@@ -371,11 +416,11 @@ public class BinarySearchTree<E> {
         if(root == null || visitor == null)
             return;
 
-        Queue<Tree<E>> queue = new LinkedList<>();
+        Queue<TreeNode<E>> queue = new LinkedList<>();
         queue.offer(root);
 
         while(!queue.isEmpty()){
-            Tree<E> node = queue.poll();
+            TreeNode<E> node = queue.poll();
 
             if(visitor.visit(node.element)) //只要返回值为true，就停止方法，由于层序遍历没有递归，因此直接判断返回值即可
                 return;
