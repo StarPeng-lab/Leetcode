@@ -48,9 +48,9 @@ class Solution {
         if(root == null)
             return 0;
 
-        int leftH = maxDepth(root.left);
-        int rightH = maxDepth(root.right);
-        return Math.max(leftH,rightH) + 1; //遍历到最后一层，0+1=1，记作最后一层高度为1，往回递归，开始计算深度
+        int leftH = maxDepth(root.left); //左
+        int rightH = maxDepth(root.right); //右
+        return Math.max(leftH,rightH) + 1; //中 ； 遍历到最后一层，0+1=1，记作最后一层高度为1，往回递归，开始计算深度
     }
 
     //方法二：广度优先搜索 + 队列
