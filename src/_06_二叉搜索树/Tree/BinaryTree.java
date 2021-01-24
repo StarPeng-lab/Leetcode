@@ -9,27 +9,27 @@ import java.util.Queue;
 //特定的add,remove,contain,compare逻辑，是要写成二叉搜索数还是红黑树... 都是在BinaryTree的基础上扩展即可
 public class BinaryTree<E> {
 
-    protected int size; //供同包下的类以及子类使用
+    protected int size; //供同包下的类以及子类使用，修饰符改为protected
     protected TreeNode<E> root;
 
     protected static class TreeNode<E>{
 
-        private E val;
-        private TreeNode<E> parent;
-        private TreeNode<E> left;
-        private TreeNode<E> right;
+        E val;
+        TreeNode<E> parent;
+        TreeNode<E> left;
+        TreeNode<E> right;
 
         public TreeNode(E element , TreeNode<E> parent){
             this.val = element;
             this.parent = parent;
         }
 
-        private boolean isLeaf(){
+        public boolean isLeaf(){
             return left == null && right == null;
 
         }
 
-        private boolean hasTwoChildren(){
+        public boolean hasTwoChildren(){
             return left != null && right != null;
         }
     }
@@ -121,7 +121,7 @@ public class BinaryTree<E> {
     }
 
     //得到node节点的【前驱节点】
-    private TreeNode<E> predecessor(TreeNode<E> node){
+    protected TreeNode<E> predecessor(TreeNode<E> node){
         if(node == null)
             return null;
 
@@ -143,7 +143,7 @@ public class BinaryTree<E> {
     }
 
     //得到节点的【后继节点】
-    private TreeNode<E> successor(TreeNode<E> node){
+    protected TreeNode<E> successor(TreeNode<E> node){
         if(node == null)
             return null;
 
