@@ -12,19 +12,23 @@ public class BinarySearchTree<E> {
 
     private static class TreeNode<E>{
 
-        private E element;
+        private E val;
         private TreeNode<E> parent;
         private TreeNode<E> left;
         private TreeNode<E> right;
 
         public TreeNode(E element , TreeNode<E> parent){
-            this.element = element;
+            this.val = element;
             this.parent = parent;
         }
 
         private boolean isLeaf(){
             return left == null && right == null;
 
+        }
+
+        private boolean hasTwoChildren(){
+            return left != null && right != null;
         }
     }
 
@@ -49,10 +53,65 @@ public class BinarySearchTree<E> {
 
     }
 
-    public boolean contains(E element){
+    public boolean contains(E val){
         return false;
     }
 
+    //删除值为val的节点
+    public void remove(E val){
+        remove(node(val));
+    }
+    private void remove(TreeNode<E> node){
+        if(node == null)
+            return;
+
+        size--;
+
+        if(node.hasTwoChildren()){ //情况1、删除度为2的节点，这里取前驱节点（也可以取后继节点）
+            TreeNode<E> pre = predecessor(node);
+            node.val = pre.val; //用前驱节点的val赋给node.val
+            node = pre; // 删除前驱节点：这里直接将前驱节点赋给node，在后面代码删去node，无论是度为几，都到达删除node的代码进行删除，达到代码复用的效果
+        }
+
+        TreeNode<E> child = node.left != null ? node.left : node.right;
+
+       if(child != null){ //情况2、删除度为1的节点
+
+            child.parent = node.parent;
+            if(node.parent == null){
+                root = child;
+            }else if(node == node.parent.left){
+                node.parent.left = child;
+            }else{ // node == node.parent.right
+                node.parent.right = child;
+            }
+
+        }else if(node.parent == null){ //度为0，并且node == root
+            root = null;
+        }else{ //情况3、删除度为0的节点
+            if(node == node.parent.left){
+                node.parent.left = null;
+            }else{ // node == node.parent.right
+                node.parent.right = null;
+            }
+        }
+    }
+    private TreeNode<E> node(E val){ //根据element找到对应的node节点
+        TreeNode<E> node = root;
+        while(node != null){
+            int cmp = compare(val,node.val);
+            if(cmp == 0) //找到了element对应的node
+                return node;
+            if(cmp > 0){
+                node = node.right;
+            }else if(cmp < 0){
+                node = node.left;
+            }
+        }
+        return null; //没有element对应的node
+    }
+
+    //添加节点
     public void add(E element){
         elementNotNullCheck(element);
 
@@ -64,18 +123,18 @@ public class BinarySearchTree<E> {
 
         TreeNode<E> node = root; //找到根节点，从根节点开始遍历
         TreeNode<E> parent = null; //记录父节点
-        int com = 0; //局部变量，JVM不会为其初始化
+        int cmp = 0; //局部变量，JVM不会为其初始化
         while(node != null){
 
-            com = compare(element,node.element);
+            cmp = compare(element,node.val);
             parent = node;
 
-            if(com > 0){ //说明 element 比 node.element 大，往下遍历到二叉搜索树的右节点 （具体二叉搜索数大的放那边，自己定义）
+            if(cmp > 0){ //说明 element 比 node.element 大，往下遍历到二叉搜索树的右节点 （具体二叉搜索数大的放那边，自己定义）
                 node = node.right;
-            }else if(com < 0){ //说明 element 比 node.element 小，往下遍历到二叉搜索树的左节点
+            }else if(cmp < 0){ //说明 element 比 node.element 小，往下遍历到二叉搜索树的左节点
                 node = node.left;
             }else{ //说明 element 等于 node.element ，对这个节点重新赋值（重新赋值的原因时，如果类型为自定义类User，此时虽然按自定义比较逻辑：age相等，两个对象即相等，但这其实还是两个不同的对象，需要新值覆盖旧值）
-                node.element = element;
+                node.val = element;
                 return;
             }
 
@@ -83,18 +142,14 @@ public class BinarySearchTree<E> {
 
         //定义要插入的节点，并确定要插入到父节点的哪个位置
         node = new TreeNode<E>(element,parent);
-        if(com > 0){
+        if(cmp > 0){
             parent.right = node;
-        }else if(com < 0){
+        }else if(cmp < 0){
             parent.left = node;
         }
 
         size++;
 
-
-    }
-
-    public void remove(E element){
 
     }
 
@@ -122,7 +177,7 @@ public class BinarySearchTree<E> {
     private void toString1(TreeNode<E> node, StringBuilder sb, String prefix){ //前序遍历
         if(node == null) return;
 
-        sb.append(prefix).append(node.element).append("\n"); //拼接 前缀 节点值 换行符
+        sb.append(prefix).append(node.val).append("\n"); //拼接 前缀 节点值 换行符
         toString1(node.left , sb , prefix+"L---"); //开始遍历左子树，并将前面拼接好的值sb传入，继续传入前缀 prefix+"L---"
         toString1(node.right , sb , prefix+"R---");
     }
@@ -130,7 +185,7 @@ public class BinarySearchTree<E> {
         if(node == null) return;
 
         toString2(node.left , sb , prefix+"L---");
-        sb.append(prefix).append(node.element).append("\n");
+        sb.append(prefix).append(node.val).append("\n");
         toString2(node.right , sb , prefix+"R---");
     }
     private void toString3(TreeNode<E> node, StringBuilder sb, String prefix){ //后序遍历
@@ -138,7 +193,7 @@ public class BinarySearchTree<E> {
 
         toString3(node.left , sb , prefix+"L---");
         toString3(node.right , sb , prefix+"R---");
-        sb.append(prefix).append(node.element).append("\n");
+        sb.append(prefix).append(node.val).append("\n");
     }
     private void toString4(TreeNode<E> node, StringBuilder sb, String prefix){ //层序遍历
         if(node == null) return; //这里的node就是root
@@ -149,7 +204,7 @@ public class BinarySearchTree<E> {
         queue.offer(node);
         while(!queue.isEmpty()){
             TreeNode<E> temp = queue.poll();
-            sb.append(temp.element).append("---");
+            sb.append(temp.val).append("---");
             levelSize--;
 
             if(temp.left != null){
@@ -305,7 +360,7 @@ public class BinarySearchTree<E> {
         if(node == null)
             return;
 
-        System.out.print(node.element+" ");
+        System.out.print(node.val+" ");
         preOrderTraversal(node.left);
         preOrderTraversal(node.right);
     }
@@ -319,7 +374,7 @@ public class BinarySearchTree<E> {
             return;
 
         inOrderTraversal(node.left);
-        System.out.print(node.element+" ");
+        System.out.print(node.val+" ");
         inOrderTraversal(node.right);
     }
 
@@ -333,7 +388,7 @@ public class BinarySearchTree<E> {
 
         postOrderTraversal(node.left);
         postOrderTraversal(node.right);
-        System.out.print(node.element+" ");
+        System.out.print(node.val+" ");
     }
 
     /*层序遍历*/
@@ -346,7 +401,7 @@ public class BinarySearchTree<E> {
 
         while(!queue.isEmpty()){
             TreeNode<E> node = queue.poll();
-            System.out.print(node.element+" ");
+            System.out.print(node.val+" ");
             if(node.left != null){
                 queue.offer(node.left);
             }
@@ -376,7 +431,7 @@ public class BinarySearchTree<E> {
     private void preOrder(TreeNode<E> node, Visitor<E> visitor){
         if(node == null || visitor.stop == true) return;
 
-        visitor.stop = visitor.visit(node.element);
+        visitor.stop = visitor.visit(node.val);
         preOrder(node.left,visitor);
         preOrder(node.right,visitor);
     }
@@ -392,7 +447,7 @@ public class BinarySearchTree<E> {
         inOrder(node.left,visitor);
         if(visitor.stop == true) //这里的visitor为true时，方法不再打印遍历到的节点，这里再次判断是为了让inOrder(node.left,visitor);中遍历到visit(E)的返回值为true的节点后，不再打印后面的节点
             return;
-        visitor.stop = visitor.visit(node.element);
+        visitor.stop = visitor.visit(node.val);
         inOrder(node.right,visitor);
     }
 
@@ -408,7 +463,7 @@ public class BinarySearchTree<E> {
         postOrder(node.right,visitor);
         if(visitor.stop == true)
             return;
-        visitor.stop = visitor.visit(node.element);
+        visitor.stop = visitor.visit(node.val);
     }
 
     //4、层序遍历
@@ -422,7 +477,7 @@ public class BinarySearchTree<E> {
         while(!queue.isEmpty()){
             TreeNode<E> node = queue.poll();
 
-            if(visitor.visit(node.element)) //只要返回值为true，就停止方法，由于层序遍历没有递归，因此直接判断返回值即可
+            if(visitor.visit(node.val)) //只要返回值为true，就停止方法，由于层序遍历没有递归，因此直接判断返回值即可
                 return;
 
             if(node.left != null){
