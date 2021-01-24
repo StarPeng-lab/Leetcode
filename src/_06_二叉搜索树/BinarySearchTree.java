@@ -46,15 +46,15 @@ public class BinarySearchTree<E> {
 
     public boolean isEmpty(){
         return size==0;
-
     }
 
     public void clear(){
-
+        root = null;
+        size = 0;
     }
 
     public boolean contains(E val){
-        return false;
+        return node(val) != null;
     }
 
     //删除值为val的节点
