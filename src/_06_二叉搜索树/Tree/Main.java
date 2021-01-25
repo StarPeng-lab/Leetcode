@@ -1,5 +1,6 @@
 package _06_二叉搜索树.Tree;
 
+import Tools.Files;
 import Tools.Printer.BinaryTreeInfo;
 import Tools.Printer.BinaryTrees;
 
@@ -52,8 +53,29 @@ public class Main {
         }, BinaryTrees.PrintStyle.INORDER); //指定按照 inorder 顺序打印
     }
 
+    //测试3：将这棵树输入到文件中，利用我们写的Files工具类
+    public static void test3(){
+        BST<Integer> bst3 = new BST<>();
+        for(int i = 0 ; i < num.length ; i++){
+            bst3.add(num[i]);
+        }
+        BST<Integer> bst4 = new BST<>();
+        for(int i = 0 ; i < num.length ; i++){
+            bst4.add((int)(Math.random()*30));
+        }
+
+        String data1 = BinaryTrees.printString(bst3); //将树转换为字符串，默认是lever_order顺序
+        data1 += "\n" + "\n"; //如果要往文件追加数据，那么这里把 原有数据 和 追加数据 换两行隔开
+        Files.writeToFile("D:/test/0125/1.txt",data1); //利用Files类的writeToFile方法，将data1输入到文件，默认添加方式为不追加
+
+        String data2 = BinaryTrees.printString(bst4,BinaryTrees.PrintStyle.INORDER);
+        Files.writeToFile("D:/test/0125/1.txt",data2,true);
+
+    }
+
     public static void main(String[] args) {
         test1();
         test2();
+        test3();
     }
 }
