@@ -9,6 +9,7 @@ import java.util.Queue;
 //二叉树
 //这里的方法都是二叉树通用的方法；无需在这里实现添加删除方法，因为没有二叉树没有添加的规则
 //特定的add,remove,contain,compare逻辑，是要写成二叉搜索数还是红黑树... 都是在BinaryTree的基础上扩展即可
+//实现了BinaryTreeInfo接口，可以直接打印出这棵树
 public class BinaryTree<E> implements BinaryTreeInfo {
 
     @Override
