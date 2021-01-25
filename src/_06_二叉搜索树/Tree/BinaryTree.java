@@ -1,5 +1,7 @@
 package _06_二叉搜索树.Tree;
 
+import Tools.Printer.BinaryTreeInfo;
+
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,7 +9,31 @@ import java.util.Queue;
 //二叉树
 //这里的方法都是二叉树通用的方法；无需在这里实现添加删除方法，因为没有二叉树没有添加的规则
 //特定的add,remove,contain,compare逻辑，是要写成二叉搜索数还是红黑树... 都是在BinaryTree的基础上扩展即可
-public class BinaryTree<E> {
+public class BinaryTree<E> implements BinaryTreeInfo {
+
+    @Override
+    public Object root() { //指明树的根节点
+        return root;
+    }
+
+    @Override
+    public Object left(Object node) { //说明树的左边的内容
+        return ((TreeNode<E>)node).left;
+    }
+
+    @Override
+    public Object right(Object node) { //说明树的右边的内容
+        return ((TreeNode<E>)node).right;
+    }
+
+    @Override
+    public Object string(Object node) { //打印出 父节点.val 和 节点.val
+        TreeNode<E> myNode = (TreeNode<E>)node;
+        String parentString = "null";
+        if(myNode.parent != null)
+            parentString = myNode.parent.val.toString();
+        return "[" + parentString + "]_" + myNode.val;
+    }
 
     protected int size; //供同包下的类以及子类使用，修饰符改为protected
     protected TreeNode<E> root;
