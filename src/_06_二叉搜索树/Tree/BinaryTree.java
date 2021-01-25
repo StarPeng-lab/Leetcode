@@ -27,7 +27,7 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     @Override
-    public Object string(Object node) { //打印出 父节点.val 和 节点.val
+    public Object string(Object node) { //定义打印内容，这里是打印出 父节点.val 和 节点.val
         TreeNode<E> myNode = (TreeNode<E>)node;
         String parentString = "null";
         if(myNode.parent != null)
