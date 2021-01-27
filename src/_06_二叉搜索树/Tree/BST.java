@@ -61,6 +61,7 @@ public class BST<E> extends BinaryTree<E>{
         }
     }
     private TreeNode<E> node(E val){ //根据element找到对应的node节点
+        elementNotNullCheck(val);
         TreeNode<E> node = root;
         while(node != null){
             int cmp = compare(val,node.val);
