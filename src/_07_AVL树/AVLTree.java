@@ -15,8 +15,27 @@ public class AVLTree<E> extends BST {
         super(comparator);
     }
 
+    private static class AVLTreeNode<E> extends TreeNode<E>{
+
+        int height;
+
+        public AVLTreeNode(E element, TreeNode<E> parent) {
+            super(element, parent);
+        }
+
+        public int balanceFactor(){
+            int leftHeight = left == null ? 0 : ((AVLTreeNode<E>)left).height;
+            int rightHeight = right == null ? 0 : (AVLTreeNode<E>right).height;
+            return leftHeight - rightHeight;
+        }
+    }
     @Override
     protected void afterAdd(TreeNode node) { //利用这种重写的方法，既不影响原本的BST，也可以实现AVL树的自身特点
         super.afterAdd(node);
+    }
+
+    @Override
+    protected TreeNode createNode(Object element, TreeNode parent) {
+        return new AVLTreeNode(element, parent);
     }
 }
