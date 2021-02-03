@@ -33,6 +33,18 @@ public class AVLTree<E> extends BST<E> {
             int rightHeight = right == null ? 0 : ((AVLTreeNode<E>)right).height;
             height =  1 + Math.max(leftHeight, rightHeight); //节点高度 = 1 + 左右子节点的高度的最大值
         }
+
+        public TreeNode<E> tallerNode(){ //找到节点的左右子节点中高度最高的那个
+            int leftHeight = left == null ? 0 : ((AVLTreeNode<E>)left).height;
+            int rightHeight = right == null ? 0 : ((AVLTreeNode<E>)right).height;
+
+            if(leftHeight < rightHeight)
+                return right;
+            if(leftHeight > rightHeight)
+                return left;
+            return isLeftChild() ? left : right; //如果节点的左右子树高度相等，那么若节点是其父节点的左子节点，就返回节点的左子节点，即返回同方向的子节点
+
+        }
     }
 
     @Override
@@ -64,9 +76,36 @@ public class AVLTree<E> extends BST<E> {
 
     //恢复平衡，grand是高度最低的那个不平衡节点
     private void rebalance(TreeNode<E> grand){
+        TreeNode<E> parent = ((AVLTreeNode<E>)grand).tallerNode(); //grand的左右子节点中高度最高的节点
+        TreeNode<E> node = ((AVLTreeNode<E>)parent).tallerNode(); //parent的左右子节点中高度最高的节点
+        //判断旋转方向
+        if(parent.isLeftChild()){ //L
+            if(node.isLeftChild()){ //LL
+                rotateRight(grand);
+            }else{ // LR
+                rotateLeft(parent);
+                rotateRight(grand);
+            }
+        }else{ //R
+            if(node.isLeftChild()){ //RL
+                rotateRight(parent);
+                rotateLeft(grand);
+            }else{ //RR
+                rotateLeft(grand);
+            }
+
+        }
+    }
+
+    private void rotateLeft(TreeNode<E> grand){ //左旋
+        TreeNode<E> parent = ((AVLTreeNode<E>)grand).tallerNode();
+        grand.right = parent.left;
+        parent.left = grand;
 
     }
 
+    private void rotateRight(TreeNode<E> left){ //右旋
 
+    }
 
 }
