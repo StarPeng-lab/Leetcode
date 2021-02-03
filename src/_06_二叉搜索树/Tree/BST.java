@@ -76,6 +76,10 @@ public class BST<E> extends BinaryTree<E>{
         return null; //没有element对应的node
     }
 
+    //新添加节点，之后的调整操作（二叉搜索树中不实现，让子类去实现，比如AVL树）
+    protected void afterAdd(TreeNode<E> node){
+    }
+
     //添加节点
     public void add(E element){
         elementNotNullCheck(element);
@@ -83,6 +87,7 @@ public class BST<E> extends BinaryTree<E>{
         if(root == null){
             root = new TreeNode<E>(element,null);
             size++;
+            afterAdd(root); //新添加节点之后的处理
             return;
         }
 
@@ -114,7 +119,7 @@ public class BST<E> extends BinaryTree<E>{
         }
 
         size++;
-
+        afterAdd(node);
 
     }
 
