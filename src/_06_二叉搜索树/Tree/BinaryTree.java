@@ -41,10 +41,10 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
     protected static class TreeNode<E>{
 
-        E val;
-        TreeNode<E> parent;
-        TreeNode<E> left;
-        TreeNode<E> right;
+        protected E val;
+        protected TreeNode<E> parent;
+        protected TreeNode<E> left;
+        protected TreeNode<E> right;
 
         public TreeNode(E element , TreeNode<E> parent){
             this.val = element;
