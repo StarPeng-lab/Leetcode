@@ -76,8 +76,13 @@ public class BST<E> extends BinaryTree<E>{
         return null; //没有element对应的node
     }
 
-    //新添加节点，之后的调整操作（二叉搜索树中不实现，让子类去实现，比如AVL树）
+    //为二叉搜索数延伸出的平衡二叉树进行扩展：1、新添加节点，之后的调整操作（二叉搜索树中不实现，让子类去实现，比如AVL树）
     protected void afterAdd(TreeNode<E> node){
+    }
+
+    //2、创建节点（改动add方法即可；BST中用new TreeNode<>()，AVL&红黑树中重写createNode方法）
+    protected TreeNode<E> createNode(E element , TreeNode<E> parent){
+        return new TreeNode<E>(element,parent);
     }
 
     //添加节点
@@ -85,7 +90,7 @@ public class BST<E> extends BinaryTree<E>{
         elementNotNullCheck(element);
 
         if(root == null){
-            root = new TreeNode<E>(element,null);
+            root = createNode(element,null);
             size++;
             afterAdd(root); //新添加节点之后的处理
             return;
@@ -111,7 +116,7 @@ public class BST<E> extends BinaryTree<E>{
         }
 
         //定义要插入的节点，并确定要插入到父节点的哪个位置
-        node = new TreeNode<E>(element,parent);
+        node = createNode(element,parent);
         if(cmp > 0){
             parent.right = node;
         }else if(cmp < 0){
