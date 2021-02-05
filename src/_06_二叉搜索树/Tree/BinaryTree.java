@@ -41,7 +41,7 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
     protected static class TreeNode<E>{
 
-        protected E val;
+        public E val;
         public TreeNode<E> parent;
         public TreeNode<E> left;
         public TreeNode<E> right;

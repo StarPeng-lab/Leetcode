@@ -15,6 +15,11 @@ public class AVLTree<E> extends BST<E> {
         super(comparator);
     }
 
+    @Override
+    public Object string(Object node) { //重写了BinaryTreeInfo接口的方法，定义打印内容，这里是打印出 直接打印node.toString()
+        return node;
+    }
+
     private static class AVLTreeNode<E> extends TreeNode<E>{
         int height = 1; //叶子节点的高度为1
 
@@ -44,6 +49,13 @@ public class AVLTree<E> extends BST<E> {
                 return left;
             return isLeftChild() ? left : right; //如果节点的左右子树高度相等，那么若节点是其父节点的左子节点，就返回节点的左子节点，即返回同方向的子节点
 
+        }
+
+        @Override
+        public String toString(){
+            String parentString = "null";
+            if(parent != null)
+                parentString = parent.val.toString();
         }
     }
 
