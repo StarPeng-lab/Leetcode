@@ -56,6 +56,7 @@ public class AVLTree<E> extends BST<E> {
             String parentString = "null";
             if(parent != null)
                 parentString = parent.val.toString();
+            return "[" + parentString + "]_" + val + "_[h:" + height + "]";
         }
     }
 
