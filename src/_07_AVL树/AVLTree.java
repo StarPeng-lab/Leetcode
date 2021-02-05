@@ -98,14 +98,45 @@ public class AVLTree<E> extends BST<E> {
     }
 
     private void rotateLeft(TreeNode<E> grand){ //左旋
-        TreeNode<E> parent = ((AVLTreeNode<E>)grand).tallerNode();
-        grand.right = parent.left;
+        TreeNode<E> parent = grand.right;
+        TreeNode<E> child = parent.left;
+        grand.right = child;
         parent.left = grand;
 
+        afterRotate(grand,parent,child);
     }
 
-    private void rotateRight(TreeNode<E> left){ //右旋
+    private void rotateRight(TreeNode<E> grand){ //右旋
+        TreeNode<E> parent = grand.left;
+        TreeNode<E> child = parent.right;
+        grand.left = child;
+        parent.right = grand;
 
+        afterRotate(grand,parent,child);
+    }
+
+    private void afterRotate(TreeNode<E> grand , TreeNode<E> parent , TreeNode<E> child){
+        //让parent成为子树的根节点（将g的父节点改为p的父节点；将g的父节点的子节点改为p）
+        parent.parent = grand.parent;
+        if(grand.isLeftChild()){
+            grand.parent.left = parent;
+        }else if(grand.isRightChild()){
+            grand.parent.right = parent;
+        }else{ //grand为根节点
+            root = parent;
+        }
+
+        //更新child节点的父节点
+        if(child != null){
+            child.parent = grand;
+        }
+
+        //更新grand节点的父节点
+        grand.parent = parent;
+
+        //更新节点的高度（先更新下面的，再更新上面的）
+        updateHeight(grand);
+        updateHeight(parent);
     }
 
 }
