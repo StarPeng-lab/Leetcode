@@ -71,7 +71,7 @@ public class AVLTree<E> extends BST<E> {
             if(isBalanced(node)){ //如果节点平衡，那么更新维护节点的高度（叶子节点高度默认为1，来到while循环中，说明添加节点的父节点已经不是叶子节点，更新其父节点的高度，从下往上一层层更新上去，父节点~祖父节点）
                 updateHeight(node);
             }else{ //节点不平衡，调整回平衡状态
-                rebalance(node); //此时找到的node，是所有失衡节点中高度最低的那个祖先节点
+                rebalance2(node); //此时找到的node，是所有失衡节点中高度最低的那个祖先节点
                 break; //整棵树已经恢复平衡了，可以跳出循环
             }
         }
@@ -87,8 +87,9 @@ public class AVLTree<E> extends BST<E> {
         ((AVLTreeNode<E>)node).updateHeight();
     }
 
-    //恢复平衡，grand是高度最低的那个不平衡节点
-    private void rebalance(TreeNode<E> grand){
+    //方式一：单选分左旋和右旋，双旋是单旋的结合
+    // 恢复平衡，grand是高度最低的那个不平衡节点
+    private void rebalance1(TreeNode<E> grand){
         TreeNode<E> parent = ((AVLTreeNode<E>)grand).tallerNode(); //grand的左右子节点中高度最高的节点
         TreeNode<E> node = ((AVLTreeNode<E>)parent).tallerNode(); //parent的左右子节点中高度最高的节点
         //判断旋转方向
@@ -150,6 +151,66 @@ public class AVLTree<E> extends BST<E> {
         //更新节点的高度（先更新下面的，再更新上面的）
         updateHeight(grand);
         updateHeight(parent);
+    }
+
+    //方式二：统一，无论是单旋还是双旋，都是调用rotate方法
+    private void rebalance2(TreeNode<E> grand){
+        TreeNode<E> parent = ((AVLTreeNode<E>)grand).tallerNode();
+        TreeNode<E> node = ((AVLTreeNode)parent).tallerNode();
+        if(parent.isLeftChild()){ // L
+            if(node.isLeftChild()){ // LL
+                rotate(grand, node.left,node,node.right, parent, parent.right,grand,grand.right);
+            }else{ //LR
+                rotate(grand, parent.left,parent,node.left, node, node.right,grand,grand.right);
+            }
+        }else{ //R
+            if(node.isLeftChild()){ //RL
+                rotate(grand, grand.left,grand,node.left, node, node.right,parent,parent.right);
+            }else{ //RR
+                rotate(grand, grand.left,grand,parent.left, parent, node.left,node,node.right);
+            }
+        }
+    }
+    private void rotate(TreeNode<E> r, //失衡的节点，即子树的根节点
+                        TreeNode<E> a , TreeNode<E> b , TreeNode<E> c, //中序遍历这棵子树，分a,b,c,d,e,f,g节点；a,b,c是旋转后的左子树
+                        TreeNode<E> d , //d是旋转后的子树的新的根节点
+                        TreeNode<E> e , TreeNode<E> f , TreeNode<E> g){ //e,f,g是旋转后的右子树
+       //1、确定新的根节点d
+
+        d.parent = r.parent;
+        if(r.isRightChild()){
+            r.parent.right = d;
+        }else if(r.isLeftChild()){
+            r.parent.left = d;
+        }else{ //r没有父节点，即r是根节点
+            root = d;
+        }
+
+        //2、确定旋转后的子树根节点d的 左子树（a-b-c）
+        b.left = a;
+        b.right = c;
+        if(a != null)
+            a.parent = b;
+        if(c != null)
+            c.parent = b;
+        updateHeight(b);
+
+        //3、确定旋转后的子树根节点d的 右子树（e-f-g）
+        f.left = e;
+        f.right = g;
+        if(e != null)
+            e.parent = f;
+        if(g != null)
+            g.parent = f;
+        updateHeight(f);
+
+        //4、将子树的 根节点与左右子树 结合（b-d-f，由于确定左右子树的根节点b,f一定存在，因此无需判断null；因为判断失衡节点时，是由下往上判断，因此中间的b,f一定存在，还不理解的话，具体画图理解）
+        d.left = b;
+        d.right = f;
+        b.parent = d;
+        f.parent = d;
+        updateHeight(d);
+
     }
 
 }
