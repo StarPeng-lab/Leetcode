@@ -21,68 +21,19 @@ public class BST<E> extends BinaryTree<E>{
         return node(val) != null;
     }
 
-    //删除值为val的节点
-    public void remove(E val){
-        remove(node(val));
-    }
-    private void remove(TreeNode<E> node){
-        if(node == null)
-            return;
-
-        size--;
-
-        if(node.hasTwoChildren()){ //情况1、删除度为2的节点，这里取前驱节点（也可以取后继节点）
-            TreeNode<E> pre = predecessor(node);
-            node.val = pre.val; //用前驱节点的val赋给node.val
-            node = pre; // 删除前驱节点：这里直接将前驱节点赋给node，在后面代码删去node，无论是度为几，都到达删除node的代码进行删除，达到代码复用的效果
-        }
-
-        TreeNode<E> child = node.left != null ? node.left : node.right;
-
-       if(child != null){ //情况2、删除度为1的节点
-
-            child.parent = node.parent;
-            if(node.parent == null){
-                root = child;
-            }else if(node == node.parent.left){
-                node.parent.left = child;
-            }else{ // node == node.parent.right
-                node.parent.right = child;
-            }
-
-        }else if(node.parent == null){ //度为0，并且node == root
-            root = null;
-        }else{ //情况3、删除度为0的节点
-            if(node == node.parent.left){
-                node.parent.left = null;
-            }else{ // node == node.parent.right
-                node.parent.right = null;
-            }
-        }
-    }
-    private TreeNode<E> node(E val){ //根据element找到对应的node节点
-        elementNotNullCheck(val);
-        TreeNode<E> node = root;
-        while(node != null){
-            int cmp = compare(val,node.val);
-            if(cmp == 0) //找到了element对应的node
-                return node;
-            if(cmp > 0){
-                node = node.right;
-            }else if(cmp < 0){
-                node = node.left;
-            }
-        }
-        return null; //没有element对应的node
+    //为二叉搜索数延伸出的平衡二叉树进行扩展：
+    //1、创建节点（改动add方法即可；BST中用new TreeNode<>()，AVL&红黑树中重写createNode方法）
+    protected TreeNode<E> createNode(E element , TreeNode<E> parent){
+        return new TreeNode<E>(element,parent);
     }
 
-    //为二叉搜索数延伸出的平衡二叉树进行扩展：1、新添加节点，之后的调整操作（二叉搜索树中不实现，让子类去实现，比如AVL树）
+    //2、添加节点，之后的调整操作（二叉搜索树中不实现，让子类去实现，比如AVL树）
     protected void afterAdd(TreeNode<E> node){
     }
 
-    //2、创建节点（改动add方法即可；BST中用new TreeNode<>()，AVL&红黑树中重写createNode方法）
-    protected TreeNode<E> createNode(E element , TreeNode<E> parent){
-        return new TreeNode<E>(element,parent);
+    //3、删除节点，之后的调整
+    protected void afterRemove(TreeNode<E> node){
+
     }
 
     //添加节点
@@ -127,7 +78,6 @@ public class BST<E> extends BinaryTree<E>{
         afterAdd(node);
 
     }
-
     private int compare(E e1, E e2){
         if(comparator != null){
             //返回值>0 ，说明e1>e2；返回值=0 ，说明e1=e2；返回值<0，说明e1<e2
@@ -136,11 +86,67 @@ public class BST<E> extends BinaryTree<E>{
         //如果构造器为null，说明没有传入构造器，需要类型E本身就实现了Comparable接口，即<E extends Comparable>，但如果直接这样写，会限制E必须实现这个接口，因此我们选择在未传入比较器的情况下，对e1进行强制类型转换，如果转换出错，jvm会为我们抛出错误
         return ((Comparable<E>)e1).compareTo(e2);
     }
-
     private void elementNotNullCheck(E element){
         if(element == null){
             throw new IllegalArgumentException("Value must not be null !");
         }
+    }
+
+    //删除值为val的节点
+    public void remove(E val){
+        remove(node(val));
+    }
+    private void remove(TreeNode<E> node){
+        if(node == null)
+            return;
+
+        size--;
+
+        if(node.hasTwoChildren()){ //情况1、删除度为2的节点，这里取前驱节点（也可以取后继节点）
+            TreeNode<E> pre = predecessor(node);
+            node.val = pre.val; //用前驱节点的val赋给node.val
+            node = pre; // 删除前驱节点：这里直接将前驱节点赋给node，在后面代码删去node，无论是度为几，都到达删除node的代码进行删除，达到代码复用的效果
+        }
+
+        TreeNode<E> child = node.left != null ? node.left : node.right;
+
+        if(child != null){ //情况2、删除度为1的节点
+
+            child.parent = node.parent;
+            if(node.parent == null){
+                root = child;
+            }else if(node == node.parent.left){
+                node.parent.left = child;
+            }else{ // node == node.parent.right
+                node.parent.right = child;
+            }
+
+        }else if(node.parent == null){ //度为0，并且node == root
+            root = null;
+        }else{ //情况3、删除度为0的节点
+            if(node == node.parent.left){
+                node.parent.left = null;
+            }else{ // node == node.parent.right
+                node.parent.right = null;
+            }
+        }
+
+        afterRemove(node); //删除节点之后，的操作处理
+    }
+    private TreeNode<E> node(E val){ //根据element找到对应的node节点
+        elementNotNullCheck(val);
+        TreeNode<E> node = root;
+        while(node != null){
+            int cmp = compare(val,node.val);
+            if(cmp == 0) //找到了element对应的node
+                return node;
+            if(cmp > 0){
+                node = node.right;
+            }else if(cmp < 0){
+                node = node.left;
+            }
+        }
+        return null; //没有element对应的node
     }
 
 }
