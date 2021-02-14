@@ -28,8 +28,23 @@ public class Main {
         System.out.println("------------------------------------------------------------------------");
     }
 
+    //测试AVL树的删除
+    public static void test3(){
+        AVLTree<Integer> avlTree = new AVLTree<>();
+        for(int i=0 ; i<data.length ; i++){
+            avlTree.add(data[i]);
+        }
+        avlTree.remove(85);
+        BinaryTrees.println(avlTree);
+        System.out.println("------------------------------------------------------------------------");
+        avlTree.remove(56);
+        avlTree.remove(21);
+        BinaryTrees.println(avlTree);
+    }
+
     public static void main(String[] args) {
-        test1();
+        //test1();
         test2();
+        test3();
     }
 }
