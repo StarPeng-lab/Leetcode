@@ -71,8 +71,19 @@ public class AVLTree<E> extends BST<E> {
             if(isBalanced(node)){ //如果节点平衡，那么更新维护节点的高度（叶子节点高度默认为1，来到while循环中，说明添加节点的父节点已经不是叶子节点，更新其父节点的高度，从下往上一层层更新上去，父节点~祖父节点）
                 updateHeight(node);
             }else{ //节点不平衡，调整回平衡状态
-                rebalance2(node); //此时找到的node，是所有失衡节点中高度最低的那个祖先节点
+                rebalance1(node); //此时找到的node，是所有失衡节点中高度最低的那个祖先节点；将node调整平衡后，整棵树即可平衡
                 break; //整棵树已经恢复平衡了，可以跳出循环
+            }
+        }
+    }
+
+    @Override
+    protected void afterRemove(TreeNode<E> node) {
+        while((node = node.parent) != null){
+            if(isBalanced(node)){
+                updateHeight(node);
+            }else{
+                rebalance2(node); //由于node的父节点、祖父节点都可能不平衡，因此这里不用break，而是继续while向上找是否有失衡的节点
             }
         }
     }
