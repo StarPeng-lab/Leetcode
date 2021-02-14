@@ -131,7 +131,7 @@ public class BST<E> extends BinaryTree<E>{
             }
         }
 
-        afterRemove(node); //删除节点之后，的操作处理
+        afterRemove(node); //删除节点之后，的操作处理（删除逻辑中，没有node.parent = null; 因此传入的node，虽然没有节点指向node，但是node.parent的指向没有断）
     }
     private TreeNode<E> node(E val){ //根据element找到对应的node节点
         elementNotNullCheck(val);
