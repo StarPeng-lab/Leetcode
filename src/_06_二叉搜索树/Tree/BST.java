@@ -121,17 +121,19 @@ public class BST<E> extends BinaryTree<E>{
                 node.parent.right = child;
             }
 
+            afterRemove(node); //删除节点之后，的操作处理（删除逻辑中，没有node.parent = null; 因此传入的node，虽然没有节点指向node，但是node.parent的指向没有断）
+
         }else if(node.parent == null){ //度为0，并且node == root
             root = null;
+            afterRemove(node); //AVL树中，可以把afterRemove(node);代码放到方法末尾；但是为了兼容红黑树，我们放在每种情况里；因为红黑树到时候不仅要传node，还要传别的参数
         }else{ //情况3、删除度为0的节点
             if(node == node.parent.left){
                 node.parent.left = null;
             }else{ // node == node.parent.right
                 node.parent.right = null;
             }
+            afterRemove(node);
         }
-
-        afterRemove(node); //删除节点之后，的操作处理（删除逻辑中，没有node.parent = null; 因此传入的node，虽然没有节点指向node，但是node.parent的指向没有断）
     }
     private TreeNode<E> node(E val){ //根据element找到对应的node节点
         elementNotNullCheck(val);
