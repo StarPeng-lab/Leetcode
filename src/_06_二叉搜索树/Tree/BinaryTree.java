@@ -66,6 +66,18 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         public boolean isRightChild(){
             return parent != null && this == parent.right;
         }
+
+        //红黑树的一些辅助函数
+        public TreeNode<E> sibling(){ //访问node的兄弟节点
+            if(isLeftChild()){
+                return parent.right;
+            }
+            if(isRightChild()){
+                return parent.left;
+            }
+            return null; //到了这里，说明node没有父节点，即没有兄弟节点
+        }
+
     }
 
     public int size(){
