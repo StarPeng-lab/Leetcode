@@ -50,7 +50,7 @@ public class ReverseWordsInAString{
 class Solution {
     public String reverseWords(String s) {
         if(s == null)
-            return " ";
+            return "";
 
         //1、消除多余空格，得到有效字符串
         char[] ch = s.toCharArray();
@@ -62,14 +62,15 @@ class Solution {
             if(ch[i] != ' '){ //此位置是字符
                 ch[cur++] = ch[i];
                 space = false;
-                len++;
             }else if(space == false){ //此位置是空格，并且前一个位置是字符（ch[i-1]是字符，ch[i]是空格）
                 ch[cur++] = ch[i];
                 space = true;
-                len++;
             }
         }
         len = space ? cur-1 : cur; //true-有效字符串的末尾有空格，即cur指向的位置；false-有效字符串末尾无空格，cur就是有效字符串长度
+
+        if(len <= 0)
+            return ""; //字符串为"     "
 
         //2、翻转
         //先翻转整个有效字符串，再单个翻转单词
@@ -82,7 +83,7 @@ class Solution {
             reverse(ch,preSpace+1,i); //翻转单个单词，单个单词在 [preSpace+1 , i)中
             preSpace = i;
         }
-        reverse(ch,preSpace+1,len); //翻转最后一个单词
+        reverse(ch,preSpace+1,len); //翻转最后一个单词，单独拿出最后一个单词，是因为前面去除多余空格时，是用的覆盖方式，整个字符数组的后面可能有残余字符，ch[len]位置不一定为空格
 
         return new String(ch,0,len); //将有效字符数组重新new一个字符串
     }
