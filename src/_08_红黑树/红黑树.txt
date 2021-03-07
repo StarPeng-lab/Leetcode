@@ -20,3 +20,36 @@
   * sibling : 节点的兄弟节点
   * uncle : 父节点的兄弟节点
   * grand : 节点的祖父节点（不是祖先节点）
+
+ 红黑树的一些辅助函数
+      private TreeNode<E> color(TreeNode<E> node , boolean color){ //染色，可以返回void，这里选择返回一个TreeNode节点
+          if(node == null)
+              return node; //节点为空，不染色
+          ((RBTreeNode<E>)node).color = color;
+          return node;
+      }
+      private TreeNode<E> red(TreeNode<E> node){ //把节点染红
+          return color(node,RED);
+      }
+      private TreeNode<E> black(TreeNode<E> node){ //把节点染黑
+          return color(node,BLACK);
+      }
+      private boolean colorOf(TreeNode<E> node){ //判断节点的颜色
+          return node == null ? BLACK : ((RBTreeNode<E>)node).color;
+      }
+      private boolean isRed(TreeNode<E> node){ //判断节点是否是红色
+          return colorOf(node) == RED;
+      }
+      private boolean isBLACK(TreeNode<E> node){ //判断节点是否是黑色
+          return colorOf(node) == BLACK;
+      }
+
+      public TreeNode<E> sibling(){ //访问node的兄弟节点，这个方法在BinaryTree.java中
+          if(isLeftChild()){
+              return parent.right;
+          }
+          if(isRightChild()){
+              return parent.left;
+          }
+          return null; //到了这里，说明node没有父节点，即没有兄弟节点
+      }
